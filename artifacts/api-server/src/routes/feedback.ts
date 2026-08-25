@@ -1,4 +1,5 @@
 import { Router, type IRouter } from "express";
+import { getAuth } from "@clerk/express";
 import { GenerateFeedbackBody, GenerateFeedbackResponse } from "@workspace/api-zod";
 import {
   generateInterviewFeedback,
@@ -9,6 +10,12 @@ import {
 const router: IRouter = Router();
 
 router.post("/feedback", async (req, res): Promise<void> => {
+  const { userId } = getAuth(req);
+  if (!userId) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
   const parsed = GenerateFeedbackBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });

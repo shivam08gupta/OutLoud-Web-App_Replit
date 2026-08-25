@@ -1,4 +1,5 @@
 import { Link, useLocation } from "wouter";
+import { LogoutLink } from "@/components/logout-link";
 import { 
   LayoutDashboard, 
   Mic, 
@@ -83,10 +84,10 @@ export default function ReturningUser() {
             <HelpCircle className="w-5 h-5" />
             <span className="font-label-md text-label-md">Help</span>
           </Link>
-          <Link href="/signin" className="flex items-center gap-sm text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg transition-colors duration-200">
+          <LogoutLink className="flex items-center gap-sm text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg transition-colors duration-200 w-full text-left">
             <LogOut className="w-5 h-5" />
             <span className="font-label-md text-label-md">Sign Out</span>
-          </Link>
+          </LogoutLink>
         </div>
       </aside>
 

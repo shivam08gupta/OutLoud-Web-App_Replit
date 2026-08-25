@@ -31,7 +31,7 @@ export default function Landing() {
               <Menu className="w-6 h-6" />
             </button>
             <div className="hidden md:flex gap-sm">
-              <Link href="/signin" className="font-label-md text-label-md border border-outline-variant text-primary px-sm py-2 rounded flex items-center justify-center hover:bg-surface-variant transition-colors">
+              <Link href="/sign-in" className="font-label-md text-label-md border border-outline-variant text-primary px-sm py-2 rounded flex items-center justify-center hover:bg-surface-variant transition-colors">
                 Login
               </Link>
             </div>
@@ -50,10 +50,10 @@ export default function Landing() {
             Practise realistic job interview conversations, speak your answers out loud, and get focused feedback to improve your next response.
           </p>
           <div className="flex flex-col sm:flex-row gap-sm mt-sm">
-            <Link href="/signin" className="bg-primary text-on-primary font-label-md text-label-md px-lg py-3 rounded-lg flex items-center justify-center hover:bg-opacity-90 transition-opacity">
+            <Link href="/sign-up" className="bg-primary text-on-primary font-label-md text-label-md px-lg py-3 rounded-lg flex items-center justify-center hover:bg-opacity-90 transition-opacity">
               Start Practising
             </Link>
-            <Link href="/signin" className="border border-outline-variant text-primary font-label-md text-label-md px-lg py-3 rounded-lg flex items-center justify-center hover:bg-surface-variant transition-colors">
+            <Link href="/sign-in" className="border border-outline-variant text-primary font-label-md text-label-md px-lg py-3 rounded-lg flex items-center justify-center hover:bg-surface-variant transition-colors">
               I already have an account
             </Link>
           </div>

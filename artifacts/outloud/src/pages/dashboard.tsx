@@ -25,6 +25,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { LogoutLink } from "@/components/logout-link";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
@@ -91,10 +92,10 @@ export default function Dashboard() {
               <HelpCircle className="w-5 h-5" />
               <span className="font-label-md text-label-md">Help</span>
             </button>
-            <Link href="/signin" className="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg hover:text-primary transition-colors duration-200">
+            <LogoutLink className="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg hover:text-primary transition-colors duration-200 w-full text-left">
               <LogOut className="w-5 h-5" />
               <span className="font-label-md text-label-md">Sign Out</span>
-            </Link>
+            </LogoutLink>
           </div>
 
           <div className="flex items-center gap-3 px-4 py-2">

@@ -27,6 +27,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { LogoutLink } from "@/components/logout-link";
 import { useGenerateFeedback } from "@workspace/api-client-react";
 
 const TOTAL_QUESTIONS = 3;
@@ -117,9 +118,9 @@ export default function Feedback() {
           >
             <HelpCircle className="w-5 h-5" /> Help
           </button>
-          <Link href="/signin" className="text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg flex items-center gap-3 transition-colors duration-200 font-label-md text-label-md">
+          <LogoutLink className="text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg flex items-center gap-3 transition-colors duration-200 font-label-md text-label-md w-full text-left">
             <LogOut className="w-5 h-5" /> Sign Out
-          </Link>
+          </LogoutLink>
           <div className="flex items-center gap-3 px-4 py-2 mt-2">
             <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">
               S

@@ -1,0 +1,52 @@
+import { shadcn } from "@clerk/themes";
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+export const clerkAppearance = {
+  theme: shadcn,
+  cssLayerName: "clerk",
+  options: {
+    logoPlacement: "inside" as const,
+    logoLinkUrl: basePath || "/",
+    logoImageUrl: `${window.location.origin}${basePath}/logo.svg`,
+  },
+  variables: {
+    colorPrimary: "#000f3f",
+    colorForeground: "#131b2e",
+    colorMutedForeground: "#45464f",
+    colorDanger: "#ba1a1a",
+    colorBackground: "#ffffff",
+    colorInput: "#ffffff",
+    colorInputForeground: "#131b2e",
+    colorNeutral: "#c6c5d0",
+    fontFamily: "'Inter', sans-serif",
+    borderRadius: "0.75rem",
+  },
+  elements: {
+    rootBox: "w-full flex justify-center",
+    cardBox: "bg-white rounded-2xl w-[440px] max-w-full overflow-hidden border border-[#c6c5d0]/30 shadow-sm",
+    card: "!shadow-none !border-0 !bg-transparent !rounded-none",
+    footer: "!shadow-none !border-0 !bg-transparent !rounded-none",
+    headerTitle: "text-[#131b2e] font-semibold",
+    headerSubtitle: "text-[#45464f]",
+    socialButtonsBlockButtonText: "text-[#131b2e] font-medium",
+    formFieldLabel: "text-[#131b2e] font-medium",
+    footerActionLink: "text-[#000f3f] font-medium hover:underline",
+    footerActionText: "text-[#45464f]",
+    dividerText: "text-[#45464f]",
+    identityPreviewEditButton: "text-[#000f3f]",
+    formFieldSuccessText: "text-[#006a63]",
+    alertText: "text-[#ba1a1a]",
+    logoBox: "flex justify-center mb-2",
+    logoImage: "h-10 w-10 rounded-lg",
+    socialButtonsBlockButton: "border border-[#c6c5d0] hover:bg-[#faf8ff] transition-colors",
+    formButtonPrimary: "bg-[#000f3f] hover:opacity-90 text-white transition-opacity",
+    formFieldInput: "border border-[#c6c5d0] focus:border-[#006a63] focus:ring-[#006a63]/10",
+    footerAction: "text-center",
+    dividerLine: "bg-[#c6c5d0]/40",
+    alert: "bg-[#ffdad6] border border-[#ba1a1a]/30",
+    otpCodeFieldInput: "border border-[#c6c5d0]",
+    formFieldRow: "gap-2",
+    main: "gap-4",
+  },
+};
