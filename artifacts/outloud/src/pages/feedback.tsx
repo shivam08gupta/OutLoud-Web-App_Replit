@@ -31,7 +31,7 @@ import { LogoutLink } from "@/components/logout-link";
 import { useUser } from "@clerk/react";
 import { useGenerateFeedback, useGetMe } from "@workspace/api-client-react";
 import { initialFor } from "@/lib/utils";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, identifyUser } from "@/lib/analytics";
 
 const TOTAL_QUESTIONS = 3;
 const SCENARIO_TYPE = "behavioural_interview";
@@ -79,6 +79,7 @@ export default function Feedback() {
   useEffect(() => {
     if (requestedForRef.current === currentQuestion) return;
     requestedForRef.current = currentQuestion;
+    identifyUser(userId);
     feedbackMutation.mutate(
       { data: { question: questionText, transcript } },
       { onSuccess: stashFeedback },

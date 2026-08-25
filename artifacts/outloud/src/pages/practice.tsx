@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation, useSearch } from "wouter";
 import { useUser } from "@clerk/react";
 import { X, Video, Mic, MicOff, StopCircle, HelpCircle, Loader2, Disc, AlertCircle, VideoOff } from "lucide-react";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, identifyUser } from "@/lib/analytics";
 
 const SCENARIO_TYPE = "behavioural_interview";
 
@@ -125,6 +125,7 @@ export default function Practice() {
 
   // Fires once per visit to a given question's practice screen.
   useEffect(() => {
+    identifyUser(userId);
     trackEvent("practice_started", {
       scenario_type: SCENARIO_TYPE,
       question_number: currentQuestion,
