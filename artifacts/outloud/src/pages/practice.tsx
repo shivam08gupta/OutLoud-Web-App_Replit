@@ -357,20 +357,30 @@ export default function Practice() {
         setTranscript((finalTranscriptRef.current + interim).trim());
       };
       recognition.onerror = (event: any) => {
-        if (event?.error === "no-speech" || event?.error === "aborted") return;
-        setSttError(
-          event?.error === "not-allowed" || event?.error === "service-not-allowed"
-            ? "Microphone access is required for speech-to-text."
-            : "Speech recognition stopped unexpectedly.",
-        );
+        // Transient errors (dropped connection, brief silence, engine hiccups) are common
+        // on Android and are auto-recovered by the onend restart below -- don't surface
+        // them as a failure. Only a genuine permission problem is worth telling the user.
+        if (event?.error === "not-allowed" || event?.error === "service-not-allowed") {
+          setSttError("Microphone access is required for speech-to-text.");
+        }
       };
       recognition.onend = () => {
+        // Android's speech engine frequently ends recognition on its own (network blip,
+        // brief silence, OS audio focus changes) even while continuous=true. Treat this
+        // as transient and restart automatically as long as the user is still recording,
+        // instead of surfacing an error or losing the transcript captured so far.
         if (isRecordingRef.current) {
-          try {
-            recognition.start();
-          } catch {
-            // ignore restart failures
-          }
+          // A restart called synchronously inside onend can throw InvalidStateError on
+          // some Android browsers because the previous session hasn't fully released yet;
+          // a short delay makes the restart reliable.
+          setTimeout(() => {
+            if (!isRecordingRef.current) return;
+            try {
+              recognition.start();
+            } catch {
+              // ignore restart failures; already-captured transcript is preserved
+            }
+          }, 250);
         }
       };
       recognitionRef.current = recognition;
@@ -423,7 +433,10 @@ export default function Practice() {
         return;
       }
 
-      const finalText = finalTranscriptRef.current.trim();
+      // Fall back to the live transcript (which includes not-yet-finalized interim
+      // speech) if recognition was cut off before Android finalized a result --
+      // otherwise a captured-but-uncommitted response would be discarded entirely.
+      const finalText = finalTranscriptRef.current.trim() || transcript.trim();
       if (!finalText) {
         setEmptyTranscriptError(true);
         return;
