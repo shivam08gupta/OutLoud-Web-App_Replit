@@ -34,6 +34,64 @@ function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
   return w.SpeechRecognition || w.webkitSpeechRecognition || null;
 }
 
+// Defined at module scope (not inside the Practice component) so its identity is
+// stable across re-renders. If this were declared inside Practice, every re-render
+// (e.g. on every live-transcript update) would create a *new* component function,
+// forcing React to unmount and remount the <video> element -- which detaches the
+// live MediaStream and makes the camera preview go blank while speaking.
+function CameraSurface({
+  videoRef,
+  className,
+  mediaError,
+  micOnly,
+  activeMode,
+  onRetry,
+  onContinueAudioOnly,
+}: {
+  videoRef: React.RefObject<HTMLVideoElement | null>;
+  className: string;
+  mediaError: string | null;
+  micOnly: boolean;
+  activeMode: "av" | "audio";
+  onRetry: () => void;
+  onContinueAudioOnly: () => void;
+}) {
+  if (mediaError) {
+    return (
+      <div className={`${className} flex flex-col items-center justify-center gap-sm p-md text-center bg-surface-container-low`}>
+        <AlertCircle className="w-8 h-8 text-error" />
+        <p className="font-body-md text-body-md text-on-surface-variant max-w-[20rem]">{mediaError}</p>
+        <div className="flex flex-col sm:flex-row gap-2 mt-1">
+          <button
+            onClick={onRetry}
+            className="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Try Again
+          </button>
+          {activeMode === "av" && (
+            <button
+              onClick={onContinueAudioOnly}
+              className="font-label-md text-label-md bg-surface-container-lowest border border-outline-variant text-primary px-4 py-2 rounded-lg hover:bg-surface-container transition-colors"
+            >
+              Continue with Microphone Only
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
+  if (micOnly) {
+    return (
+      <div className={`${className} flex flex-col items-center justify-center gap-sm p-md text-center bg-surface-container-low`}>
+        <VideoOff className="w-8 h-8 text-on-surface-variant" />
+        <p className="font-body-md text-body-md text-on-surface-variant">Camera unavailable &mdash; microphone only</p>
+      </div>
+    );
+  }
+  // No transform/mirroring applied -- the feed is shown in its natural (unmirrored) orientation.
+  return <video ref={videoRef} autoPlay muted playsInline className={`${className} object-cover`} />;
+}
+
 export default function Practice() {
   const [, setLocation] = useLocation();
   const search = useSearch();
@@ -285,42 +343,6 @@ export default function Practice() {
     </div>
   );
 
-  const CameraSurface = ({ videoRef, className }: { videoRef: React.RefObject<HTMLVideoElement | null>; className: string }) => {
-    if (mediaError) {
-      return (
-        <div className={`${className} flex flex-col items-center justify-center gap-sm p-md text-center bg-surface-container-low`}>
-          <AlertCircle className="w-8 h-8 text-error" />
-          <p className="font-body-md text-body-md text-on-surface-variant max-w-[20rem]">{mediaError}</p>
-          <div className="flex flex-col sm:flex-row gap-2 mt-1">
-            <button
-              onClick={retry}
-              className="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
-            >
-              Try Again
-            </button>
-            {activeMode === "av" && (
-              <button
-                onClick={continueAudioOnly}
-                className="font-label-md text-label-md bg-surface-container-lowest border border-outline-variant text-primary px-4 py-2 rounded-lg hover:bg-surface-container transition-colors"
-              >
-                Continue with Microphone Only
-              </button>
-            )}
-          </div>
-        </div>
-      );
-    }
-    if (micOnly) {
-      return (
-        <div className={`${className} flex flex-col items-center justify-center gap-sm p-md text-center bg-surface-container-low`}>
-          <VideoOff className="w-8 h-8 text-on-surface-variant" />
-          <p className="font-body-md text-body-md text-on-surface-variant">Camera unavailable &mdash; microphone only</p>
-        </div>
-      );
-    }
-    return <video ref={videoRef} autoPlay muted playsInline className={`${className} object-cover`} />;
-  };
-
   return (
     <div className="bg-primary text-on-primary min-h-screen flex flex-col font-body-md selection:bg-secondary selection:text-on-secondary">
       {/* Desktop Header */}
@@ -359,7 +381,15 @@ export default function Practice() {
         
         {/* Mobile Camera View (Top) */}
         <div className="md:hidden w-full aspect-[3/4] max-h-[353px] bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden relative shadow-sm shrink-0 flex items-center justify-center">
-          <CameraSurface videoRef={mobileVideoRef} className="w-full h-full" />
+          <CameraSurface
+            videoRef={mobileVideoRef}
+            className="w-full h-full"
+            mediaError={mediaError}
+            micOnly={micOnly}
+            activeMode={activeMode}
+            onRetry={retry}
+            onContinueAudioOnly={continueAudioOnly}
+          />
           {isRecording && (
             <div className="absolute top-3 right-3 flex items-center gap-2 bg-surface-container-lowest/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-outline-variant">
               <div className="w-2 h-2 rounded-full bg-error animate-pulse"></div>
@@ -386,7 +416,15 @@ export default function Practice() {
               <span className="border-l border-on-tertiary/30 ml-1 pl-2">You</span>
             </div>
           </div>
-          <CameraSurface videoRef={desktopVideoRef} className="w-full h-full rounded-xl" />
+          <CameraSurface
+            videoRef={desktopVideoRef}
+            className="w-full h-full rounded-xl"
+            mediaError={mediaError}
+            micOnly={micOnly}
+            activeMode={activeMode}
+            onRetry={retry}
+            onContinueAudioOnly={continueAudioOnly}
+          />
           {isRecording && <div className="absolute inset-0 border-4 border-error rounded-xl pointer-events-none transition-all duration-300"></div>}
         </div>
 
