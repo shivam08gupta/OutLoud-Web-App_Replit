@@ -17,6 +17,7 @@ if (MIXPANEL_TOKEN) {
       autocapture: false,
       track_pageview: false,
       persistence: "localStorage",
+      api_host: "https://api-eu.mixpanel.com",
     });
     enabled = true;
   } catch {
