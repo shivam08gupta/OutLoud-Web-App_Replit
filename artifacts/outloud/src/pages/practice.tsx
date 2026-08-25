@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useSearch } from "wouter";
+import { useUser } from "@clerk/react";
 import { X, Video, Mic, MicOff, StopCircle, HelpCircle, Loader2, Disc, AlertCircle, VideoOff } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
+
+const SCENARIO_TYPE = "behavioural_interview";
 
 const QUESTIONS = [
   {
@@ -102,6 +106,8 @@ export default function Practice() {
   );
   const requestedMode: "av" | "audio" = params.get("media") === "audio" ? "audio" : "av";
   const question = QUESTIONS[currentQuestion - 1];
+  const { user } = useUser();
+  const userId = user?.id;
 
   const [activeMode, setActiveMode] = useState<"av" | "audio">(requestedMode);
   const [retryToken, setRetryToken] = useState(0);
@@ -116,6 +122,16 @@ export default function Practice() {
   const [emptyTranscriptError, setEmptyTranscriptError] = useState(false);
 
   const speechSupported = !!getSpeechRecognitionCtor();
+
+  // Fires once per visit to a given question's practice screen.
+  useEffect(() => {
+    trackEvent("practice_started", {
+      scenario_type: SCENARIO_TYPE,
+      question_number: currentQuestion,
+      user_id: userId,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestion]);
 
   const streamRef = useRef<MediaStream | null>(null);
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
@@ -149,6 +165,11 @@ export default function Practice() {
         setMicOnly(activeMode === "audio" || stream.getVideoTracks().length === 0);
         [mobileVideoRef, desktopVideoRef].forEach((ref) => {
           if (ref.current) ref.current.srcObject = stream;
+        });
+        trackEvent("permissions_granted", {
+          scenario_type: SCENARIO_TYPE,
+          question_number: currentQuestion,
+          user_id: userId,
         });
       })
       .catch((err) => {
@@ -228,6 +249,11 @@ export default function Practice() {
     setTranscript("");
     isRecordingRef.current = true;
     setIsRecording(true);
+    trackEvent("recording_started", {
+      scenario_type: SCENARIO_TYPE,
+      question_number: currentQuestion,
+      user_id: userId,
+    });
 
     // Real microphone recording via MediaRecorder.
     if (streamRef.current && typeof MediaRecorder !== "undefined") {
@@ -293,6 +319,7 @@ export default function Practice() {
     isRecordingRef.current = false;
     setIsRecording(false);
     setIsSubmitting(true);
+    const responseDurationSeconds = seconds;
 
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
       try {
@@ -319,6 +346,12 @@ export default function Practice() {
       if (!speechSupported) {
         sessionStorage.setItem(`outloud_transcript_${currentQuestion}`, "");
         sessionStorage.setItem(`outloud_transcript_unsupported_${currentQuestion}`, "1");
+        trackEvent("response_submitted", {
+          scenario_type: SCENARIO_TYPE,
+          question_number: currentQuestion,
+          user_id: userId,
+          response_duration_seconds: responseDurationSeconds,
+        });
         setLocation(`/feedback?q=${currentQuestion}`);
         return;
       }
@@ -331,6 +364,12 @@ export default function Practice() {
 
       sessionStorage.removeItem(`outloud_transcript_unsupported_${currentQuestion}`);
       sessionStorage.setItem(`outloud_transcript_${currentQuestion}`, finalText);
+      trackEvent("response_submitted", {
+        scenario_type: SCENARIO_TYPE,
+        question_number: currentQuestion,
+        user_id: userId,
+        response_duration_seconds: responseDurationSeconds,
+      });
       setLocation(`/feedback?q=${currentQuestion}`);
     }, 1200);
   };

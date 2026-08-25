@@ -28,10 +28,13 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { LogoutLink } from "@/components/logout-link";
+import { useUser } from "@clerk/react";
 import { useGenerateFeedback, useGetMe } from "@workspace/api-client-react";
 import { initialFor } from "@/lib/utils";
+import { trackEvent } from "@/lib/analytics";
 
 const TOTAL_QUESTIONS = 3;
+const SCENARIO_TYPE = "behavioural_interview";
 
 export default function Feedback() {
   const [, setLocation] = useLocation();
@@ -40,6 +43,8 @@ export default function Feedback() {
   const [helpOpen, setHelpOpen] = useState(false);
   const { data: me } = useGetMe();
   const initial = initialFor(me?.name);
+  const { user } = useUser();
+  const userId = user?.id;
 
   const currentQuestion = Math.min(
     Math.max(parseInt(new URLSearchParams(search).get("q") ?? "1", 10) || 1, 1),
@@ -64,6 +69,11 @@ export default function Feedback() {
       `outloud_feedback_${currentQuestion}`,
       JSON.stringify(feedbackResult),
     );
+    trackEvent("feedback_generated", {
+      scenario_type: SCENARIO_TYPE,
+      question_number: currentQuestion,
+      user_id: userId,
+    });
   };
 
   useEffect(() => {
@@ -77,6 +87,11 @@ export default function Feedback() {
   }, [currentQuestion]);
 
   const handleRetryFeedback = () => {
+    trackEvent("retry_clicked", {
+      scenario_type: SCENARIO_TYPE,
+      question_number: currentQuestion,
+      user_id: userId,
+    });
     feedbackMutation.mutate(
       { data: { question: questionText, transcript } },
       { onSuccess: stashFeedback },
