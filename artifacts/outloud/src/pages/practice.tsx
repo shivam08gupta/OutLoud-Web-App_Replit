@@ -312,6 +312,10 @@ export default function Practice() {
     setTimeout(() => {
       setIsSubmitting(false);
 
+      // Also hand off the question prompt text so the Feedback screen can
+      // request AI feedback without needing its own copy of the question list.
+      sessionStorage.setItem(`outloud_question_${currentQuestion}`, question.prompt);
+
       if (!speechSupported) {
         sessionStorage.setItem(`outloud_transcript_${currentQuestion}`, "");
         sessionStorage.setItem(`outloud_transcript_unsupported_${currentQuestion}`, "1");

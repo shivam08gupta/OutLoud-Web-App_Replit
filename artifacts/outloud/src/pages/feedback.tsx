@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useSearch } from "wouter";
 import { 
   LayoutDashboard, 
@@ -16,7 +16,9 @@ import {
   Lightbulb,
   ArrowDown,
   Quote,
-  MessageSquare
+  MessageSquare,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import {
   Dialog,
@@ -25,6 +27,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { useGenerateFeedback } from "@workspace/api-client-react";
 
 const TOTAL_QUESTIONS = 3;
 
@@ -42,6 +45,27 @@ export default function Feedback() {
 
   const sttUnsupported = sessionStorage.getItem(`outloud_transcript_unsupported_${currentQuestion}`) === "1";
   const transcript = sessionStorage.getItem(`outloud_transcript_${currentQuestion}`) ?? "";
+  const questionText =
+    sessionStorage.getItem(`outloud_question_${currentQuestion}`) ?? "Tell me about your response.";
+
+  // Real AI feedback via the backend's Gemini-backed /api/feedback endpoint.
+  const feedbackMutation = useGenerateFeedback();
+  const requestedForRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (requestedForRef.current === currentQuestion) return;
+    requestedForRef.current = currentQuestion;
+    feedbackMutation.mutate({ data: { question: questionText, transcript } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestion]);
+
+  const handleRetryFeedback = () => {
+    feedbackMutation.mutate({ data: { question: questionText, transcript } });
+  };
+
+  const feedback = feedbackMutation.data;
+  const isFeedbackLoading = feedbackMutation.isPending;
+  const isFeedbackError = feedbackMutation.isError;
 
   const handleTryAgain = () => setLocation(`/practice?q=${currentQuestion}`);
   const handleNext = () => {
@@ -150,99 +174,128 @@ export default function Feedback() {
           </div>
 
           {/* Bento Grid Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-xl">
-            
-            {/* Section 1: What went well */}
-            <div className="md:col-span-4 bg-surface-container-lowest rounded-xl border border-surface-variant p-md transition-transform hover:-translate-y-0.5 hover:shadow-sm flex flex-col">
-              <div className="flex items-center gap-3 mb-sm">
-                <div className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
-                  <CheckCircle2 className="w-6 h-6 fill-current text-surface-container-lowest" strokeWidth={1.5} />
-                </div>
-                <h3 className="font-headline-md text-headline-md text-primary">What went well</h3>
-              </div>
-              <div className="flex-1">
-                <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                  You gave a highly relevant example and clearly explained the steps you took to try and resolve the disagreement. Your structural approach to the problem was sound.
-                </p>
-              </div>
-              <div className="mt-md pt-md border-t border-surface-variant flex flex-wrap gap-2">
-                <span className="px-2 py-1 bg-surface-container rounded font-label-md text-caption text-on-surface-variant border border-surface-variant">Clear Structure</span>
-                <span className="px-2 py-1 bg-surface-container rounded font-label-md text-caption text-on-surface-variant border border-surface-variant">Relevant Example</span>
-              </div>
+          {isFeedbackLoading ? (
+            <div className="mb-xl bg-surface-container-lowest rounded-xl border border-surface-variant p-xl flex flex-col items-center justify-center gap-sm text-center min-h-[240px]">
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
+              <p className="font-headline-md text-headline-md text-primary">Analyzing your response...</p>
+              <p className="font-body-md text-body-md text-on-surface-variant max-w-[28rem]">
+                Our AI coach is reviewing your transcript for clarity, structure, and delivery.
+              </p>
             </div>
+          ) : isFeedbackError ? (
+            <div className="mb-xl bg-error-container text-on-error-container rounded-xl border border-error-container p-lg flex flex-col items-center text-center gap-sm">
+              <AlertCircle className="w-8 h-8" />
+              <p className="font-headline-md text-headline-md">We couldn't generate feedback right now. Please try again.</p>
+              <button
+                onClick={handleRetryFeedback}
+                className="mt-sm bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity"
+              >
+                Try Again
+              </button>
+            </div>
+          ) : feedback ? (
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-xl">
 
-            {/* Section 2: Focus on */}
-            <div className="md:col-span-8 bg-surface-container-lowest rounded-xl border border-surface-variant p-md transition-transform hover:-translate-y-0.5 hover:shadow-sm flex flex-col">
-              <div className="flex items-center gap-3 mb-md">
-                <div className="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
-                  <Sliders className="w-5 h-5 fill-current" />
+              {/* Section 1: What went well */}
+              <div className="md:col-span-4 bg-surface-container-lowest rounded-xl border border-surface-variant p-md transition-transform hover:-translate-y-0.5 hover:shadow-sm flex flex-col">
+                <div className="flex items-center gap-3 mb-sm">
+                  <div className="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+                    <CheckCircle2 className="w-6 h-6 fill-current text-surface-container-lowest" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="font-headline-md text-headline-md text-primary">What went well</h3>
                 </div>
-                <h3 className="font-headline-md text-headline-md text-primary">Focus on</h3>
+                <div className="flex-1">
+                  <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    {feedback.whatWentWell.summary}
+                  </p>
+                </div>
+                {feedback.whatWentWell.tags.length > 0 && (
+                  <div className="mt-md pt-md border-t border-surface-variant flex flex-wrap gap-2">
+                    {feedback.whatWentWell.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-surface-container rounded font-label-md text-caption text-on-surface-variant border border-surface-variant"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
-                {/* Improvement 1 */}
-                <div className="bg-background rounded-lg p-sm border border-surface-variant">
-                  <div className="flex items-center gap-2 mb-xs">
-                    <FileEdit className="w-4 h-4 text-on-surface-variant" />
-                    <h4 className="font-label-md text-label-md text-primary">Refine Word Choice</h4>
+
+              {/* Section 2: Focus on */}
+              <div className="md:col-span-8 bg-surface-container-lowest rounded-xl border border-surface-variant p-md transition-transform hover:-translate-y-0.5 hover:shadow-sm flex flex-col">
+                <div className="flex items-center gap-3 mb-md">
+                  <div className="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+                    <Sliders className="w-5 h-5 fill-current" />
                   </div>
-                  <p className="font-body-md text-caption text-on-surface-variant mb-sm">Elevate your language for a more professional tone.</p>
-                  <div className="space-y-2">
-                    <div className="p-2 bg-surface-container-low rounded border border-error-container border-opacity-50 line-through text-on-surface-variant font-body-md text-caption opacity-70">
-                      "I tried to explain to him why my way was better."
-                    </div>
-                    <div className="flex justify-center">
-                      <ArrowDown className="w-4 h-4 text-outline" />
-                    </div>
-                    <div className="p-2 bg-secondary-container bg-opacity-20 rounded border border-secondary-container text-primary font-body-md text-caption font-medium">
-                      "I proposed an alternative approach by outlining the benefits."
-                    </div>
-                  </div>
+                  <h3 className="font-headline-md text-headline-md text-primary">Focus on</h3>
                 </div>
 
-                {/* Improvement 2 */}
-                <div className="bg-background rounded-lg p-sm border border-surface-variant flex flex-col">
-                  <div className="flex items-center gap-2 mb-xs">
-                    <MicOff className="w-4 h-4 text-on-surface-variant" />
-                    <h4 className="font-label-md text-label-md text-primary">Reduce Filler Words</h4>
+                {feedback.focusOn.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    {feedback.focusOn.map((item, index) => (
+                      <div key={item.title + index} className="bg-background rounded-lg p-sm border border-surface-variant">
+                        <div className="flex items-center gap-2 mb-xs">
+                          {index === 0 ? (
+                            <FileEdit className="w-4 h-4 text-on-surface-variant" />
+                          ) : (
+                            <MicOff className="w-4 h-4 text-on-surface-variant" />
+                          )}
+                          <h4 className="font-label-md text-label-md text-primary">{item.title}</h4>
+                        </div>
+                        <p className="font-body-md text-caption text-on-surface-variant mb-sm">{item.description}</p>
+                        <div className="space-y-2">
+                          <div className="p-2 bg-surface-container-low rounded border border-error-container border-opacity-50 line-through text-on-surface-variant font-body-md text-caption opacity-70">
+                            "{item.example.youSaid}"
+                          </div>
+                          <div className="flex justify-center">
+                            <ArrowDown className="w-4 h-4 text-outline" />
+                          </div>
+                          <div className="p-2 bg-secondary-container bg-opacity-20 rounded border border-secondary-container text-primary font-body-md text-caption font-medium">
+                            "{item.example.tryInstead}"
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <p className="font-body-md text-caption text-on-surface-variant mb-sm">You used "like" and "um" several times during transitions.</p>
-                  <div className="mt-auto bg-surface-container rounded p-sm flex gap-3 items-start">
+                ) : (
+                  <div className="bg-background rounded-lg p-sm border border-surface-variant flex gap-3 items-start">
                     <Lightbulb className="w-5 h-5 text-on-surface-variant mt-1" />
-                    <div>
-                      <span className="font-label-md text-caption text-primary block mb-1">Pro Tip</span>
-                      <span className="font-body-md text-caption text-on-surface-variant block">Try taking a deliberate, short pause instead of filling the silence. Silence conveys thoughtfulness.</span>
-                    </div>
+                    <p className="font-body-md text-caption text-on-surface-variant">
+                      Nothing specific to flag this time — keep practicing to build on what's working.
+                    </p>
                   </div>
-                </div>
+                )}
               </div>
-            </div>
 
-            {/* Section 3: Try saying it this way */}
-            <div className="col-span-1 md:col-span-12 bg-primary-container text-on-primary-container rounded-xl p-lg relative overflow-hidden transition-transform hover:-translate-y-0.5 hover:shadow-sm">
-              <div className="absolute right-0 top-0 opacity-5 pointer-events-none">
-                <Quote className="w-48 h-48 fill-current translate-x-4 -translate-y-4" />
+              {/* Section 3: Try saying it this way */}
+              <div className="col-span-1 md:col-span-12 bg-primary-container text-on-primary-container rounded-xl p-lg relative overflow-hidden transition-transform hover:-translate-y-0.5 hover:shadow-sm">
+                <div className="absolute right-0 top-0 opacity-5 pointer-events-none">
+                  <Quote className="w-48 h-48 fill-current translate-x-4 -translate-y-4" />
+                </div>
+                <h3 className="font-headline-md text-headline-md mb-md relative z-10 text-on-primary">Try saying it this way</h3>
+                <div className="relative z-10 space-y-4">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-label-md font-bold text-on-primary opacity-70">You said:</span>
+                    <p className="font-body-md text-primary-fixed-dim">
+                      {transcript ? `"${transcript}"` : "No transcript was captured for this attempt."}
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-1 p-md bg-secondary-container rounded-lg border border-secondary-container">
+                    <span className="text-label-md font-bold text-primary">Try:</span>
+                    <p className="font-body-lg font-medium text-primary">{feedback.trySayingItThisWay.suggestion}</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-label-md font-bold text-on-primary opacity-70">Why:</span>
+                    <p className="font-body-md text-primary-fixed-dim">{feedback.trySayingItThisWay.why}</p>
+                  </div>
+                  <p className="pt-md font-label-md text-on-primary opacity-80 italic">Now try answering the question again in your own words.</p>
+                </div>
               </div>
-              <h3 className="font-headline-md text-headline-md mb-md relative z-10 text-on-primary">Try saying it this way</h3>
-              <div className="relative z-10 space-y-4">
-                <div className="flex flex-col gap-1">
-                  <span className="text-label-md font-bold text-on-primary opacity-70">You said:</span>
-                  <p className="font-body-md text-primary-fixed-dim">"I tried to explain him why my way was better."</p>
-                </div>
-                <div className="flex flex-col gap-1 p-md bg-secondary-container rounded-lg border border-secondary-container">
-                  <span className="text-label-md font-bold text-primary">Try:</span>
-                  <p className="font-body-lg font-medium text-primary">"I tried to explain to him why my way was better."</p>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-label-md font-bold text-on-primary opacity-70">Why:</span>
-                  <p className="font-body-md text-primary-fixed-dim">Use 'explain something to someone' rather than 'explain someone'.</p>
-                </div>
-                <p className="pt-md font-label-md text-on-primary opacity-80 italic">Now try answering the question again in your own words.</p>
-              </div>
-            </div>
 
-          </div>
+            </div>
+          ) : null}
 
           {/* Action Area */}
           <div className="flex flex-col sm:flex-row items-center gap-sm mt-lg pt-lg border-t border-surface-variant">

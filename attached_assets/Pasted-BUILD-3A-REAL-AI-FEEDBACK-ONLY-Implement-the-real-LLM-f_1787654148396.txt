@@ -1,0 +1,223 @@
+BUILD 3A: REAL AI FEEDBACK ONLY
+
+Implement the real LLM feedback layer for the existing OutLoud app.
+
+IMPORTANT:
+- Do NOT implement Google authentication yet.
+- Do NOT implement Mixpanel yet.
+- Do NOT implement the 3-question loop yet.
+- Do NOT redesign the UI.
+- Do NOT modify the working camera, microphone, or browser speech-to-text functionality.
+- Keep this task narrowly focused on replacing the current placeholder AI feedback with real Gemini-generated feedback.
+- Minimize dependencies and implementation complexity because this project has limited build credits.
+
+LLM:
+Use Google Gemini 2.5 Flash.
+
+Model identifier:
+gemini-2.5-flash
+
+API:
+Use the official Google Gemini API/server-side SDK or REST API.
+
+SECURITY:
+- NEVER expose the Gemini API key in frontend/client-side code.
+- Store the key in a server-side environment variable named:
+  GEMINI_API_KEY
+- The frontend must call our backend endpoint.
+- The backend calls Gemini.
+- Do not hardcode the API key anywhere in the repository.
+- If GEMINI_API_KEY is not configured, show a clear development error state rather than exposing secrets or crashing the application.
+
+ARCHITECTURE:
+
+Existing flow:
+Browser microphone
+→ Browser Speech-to-Text
+→ final transcript
+
+New flow:
+final transcript
+→ frontend POST request to backend feedback endpoint
+→ backend sends transcript + question + evaluation instructions to Gemini
+→ Gemini returns structured JSON
+→ backend validates/parses the JSON
+→ frontend renders the existing AI Feedback screen.
+
+Create a minimal backend endpoint, for example:
+
+POST /api/feedback
+
+Request body:
+
+{
+  "question": "Tell me about a time when you disagreed with a stakeholder.",
+  "transcript": "..."
+}
+
+Response:
+
+{
+  "whatWentWell": {
+    "summary": "...",
+    "tags": ["...", "..."]
+  },
+  "focusOn": [
+    {
+      "title": "...",
+      "description": "...",
+      "example": {
+        "youSaid": "...",
+        "tryInstead": "..."
+      }
+    }
+  ],
+  "trySayingItThisWay": {
+    "suggestion": "...",
+    "why": "..."
+  }
+}
+
+SYSTEM INSTRUCTIONS FOR GEMINI:
+
+You are OutLoud, an interview speaking practice coach.
+
+Your goal is to help job seekers improve how they articulate answers in English during realistic interview conversations.
+
+Evaluate ONLY the user's spoken response as represented by the transcript.
+
+Evaluate:
+1. Clarity
+2. Structure
+3. Relevance to the question
+4. Professional word choice
+5. Filler-word usage
+6. Conciseness
+7. Ability to communicate the main point clearly
+
+Do NOT evaluate:
+- appearance
+- attractiveness
+- race or ethnicity
+- accent as an identity characteristic
+- eye contact
+- body language
+- facial expressions
+- personality
+- intelligence
+- confidence as a personal trait
+- grammar perfection as the primary goal
+
+Do not shame, embarrass, insult, or discourage the user.
+
+The user may have imperfect English. Focus on whether their meaning is understandable and how they can communicate it more clearly and professionally.
+
+Give practical feedback that encourages the user to try answering the same question again.
+
+IMPORTANT:
+Return ONLY valid JSON matching the requested schema.
+Do not return Markdown.
+Do not add commentary outside the JSON.
+
+FEEDBACK RULES:
+
+WHAT WENT WELL:
+Identify 1-2 genuine strengths from the actual response.
+Do not invent strengths that are not supported by the transcript.
+
+FOCUS ON:
+Identify a maximum of 2 high-value improvements.
+Prioritize improvements that are most useful for the user's next attempt.
+
+TRY SAYING IT THIS WAY:
+Provide a concise example of how the user's idea could be expressed more clearly or professionally.
+Do not completely rewrite the answer into a perfect artificial response.
+Preserve the user's intended meaning.
+
+WHY:
+Briefly explain why the suggested version is clearer or more effective.
+
+If the transcript is extremely short, unclear, or empty:
+- Do not fabricate feedback.
+- Return useful but gentle feedback explaining that there is not enough content to evaluate.
+- Encourage the user to try again.
+
+JSON SCHEMA:
+
+{
+  "whatWentWell": {
+    "summary": "string",
+    "tags": ["string", "string"]
+  },
+  "focusOn": [
+    {
+      "title": "string",
+      "description": "string",
+      "example": {
+        "youSaid": "string",
+        "tryInstead": "string"
+      }
+    }
+  ],
+  "trySayingItThisWay": {
+    "suggestion": "string",
+    "why": "string"
+  }
+}
+
+UI INTEGRATION:
+
+Use the existing AI Feedback screen.
+
+Replace the current placeholder/static content with the real API response.
+
+Keep the existing visual design and layout.
+
+The existing sections should map as follows:
+
+"What went well"
+→ whatWentWell.summary
+→ whatWentWell.tags
+
+"Focus on"
+→ focusOn items
+
+"Try saying it this way"
+→ trySayingItThisWay.suggestion
+→ trySayingItThisWay.why
+
+Keep the existing "Try Again" CTA.
+
+Keep the existing "Next Question" CTA as-is for now. Do NOT implement the full 3-question loop in this task.
+
+LOADING STATE:
+
+After the user stops recording and before Gemini responds:
+- Show a clear loading state such as "Analyzing your response..."
+- Disable repeated submission while the request is processing.
+- Do not lose the transcript.
+- Handle API failures gracefully.
+
+ERROR STATE:
+
+If Gemini fails:
+- Keep the transcript visible.
+- Show a friendly message such as:
+  "We couldn't generate feedback right now. Please try again."
+- Provide a Try Again action.
+- Do not show raw API errors, API keys, stack traces, or internal implementation details.
+
+TESTING:
+
+After implementation:
+1. Start a practice question.
+2. Record a response.
+3. Stop recording.
+4. Confirm the final transcript is sent to the backend.
+5. Confirm the backend calls Gemini.
+6. Confirm structured JSON is returned.
+7. Confirm the AI Feedback screen renders the returned content.
+8. Confirm camera and microphone behavior remains unchanged.
+9. Confirm the live transcript still works.
+
+Do not add authentication, Mixpanel, database persistence, or new UI in this task.

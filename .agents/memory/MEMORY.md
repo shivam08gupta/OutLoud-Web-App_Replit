@@ -1,1 +1,2 @@
 - [Tailwind v4 spacing/max-w token collision](tailwind-v4-spacing-maxw-collision.md) — custom `--spacing-sm/md/lg/xl` theme tokens silently override Tailwind's built-in `max-w-{sm,md,lg,xl}` scale.
+- [Gemini model name drift](gemini-model-naming-drift.md) — a Gemini model ID can be retired for new keys; read the replacement name from the API's 404 error instead of guessing.

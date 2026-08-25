@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: feedback
+    description: AI feedback operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /feedback:
+    post:
+      operationId: generateFeedback
+      tags: [feedback]
+      summary: Generate AI feedback for a practice response
+      description: Sends a question and transcript to Gemini and returns structured coaching feedback.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedbackRequest"
+      responses:
+        "200":
+          description: Feedback generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedbackResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "503":
+          description: AI feedback is not available
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +66,76 @@ components:
           type: string
       required:
         - status
+    FeedbackRequest:
+      type: object
+      required:
+        - question
+        - transcript
+      properties:
+        question:
+          type: string
+          minLength: 1
+        transcript:
+          type: string
+    FeedbackFocusItem:
+      type: object
+      required:
+        - title
+        - description
+        - example
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        example:
+          type: object
+          required:
+            - youSaid
+            - tryInstead
+          properties:
+            youSaid:
+              type: string
+            tryInstead:
+              type: string
+    FeedbackResponse:
+      type: object
+      required:
+        - whatWentWell
+        - focusOn
+        - trySayingItThisWay
+      properties:
+        whatWentWell:
+          type: object
+          required:
+            - summary
+            - tags
+          properties:
+            summary:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+        focusOn:
+          type: array
+          items:
+            $ref: "#/components/schemas/FeedbackFocusItem"
+        trySayingItThisWay:
+          type: object
+          required:
+            - suggestion
+            - why
+          properties:
+            suggestion:
+              type: string
+            why:
+              type: string
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
 
