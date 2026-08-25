@@ -1,0 +1,378 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>OutLoud - Practice Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#dae2fd",
+                    "error-container": "#ffdad6",
+                    "inverse-on-surface": "#eef0ff",
+                    "on-secondary-container": "#006f67",
+                    "primary-container": "#172554",
+                    "on-secondary-fixed": "#00201d",
+                    "surface-bright": "#faf8ff",
+                    "on-error": "#ffffff",
+                    "primary": "#000f3f",
+                    "on-primary-fixed": "#071747",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#faf8ff",
+                    "surface-container": "#eaedff",
+                    "on-tertiary": "#ffffff",
+                    "secondary": "#006a63",
+                    "surface-container-highest": "#dae2fd",
+                    "tertiary": "#111416",
+                    "surface-container-low": "#f2f3ff",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#374475",
+                    "on-surface": "#131b2e",
+                    "on-primary-container": "#808dc2",
+                    "surface-dim": "#d2d9f4",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#b7c4fd",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-container": "#8d9092",
+                    "on-background": "#131b2e",
+                    "secondary-fixed-dim": "#80d5cb",
+                    "tertiary-fixed": "#e0e3e5",
+                    "surface-tint": "#4f5c8e",
+                    "surface-container-high": "#e2e7ff",
+                    "tertiary-container": "#25292b",
+                    "outline-variant": "#c6c5d0",
+                    "inverse-surface": "#283044",
+                    "primary-fixed-dim": "#b7c4fd",
+                    "secondary-fixed": "#9cf2e8",
+                    "on-secondary-fixed-variant": "#00504a",
+                    "secondary-container": "#99efe5",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "on-surface-variant": "#45464f",
+                    "primary-fixed": "#dce1ff",
+                    "outline": "#767680",
+                    "surface": "#faf8ff",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "md": "24px",
+                    "container-max": "1280px",
+                    "base": "4px",
+                    "lg": "40px",
+                    "sm": "16px",
+                    "xs": "8px",
+                    "xl": "64px"
+            },
+            "fontFamily": {
+                    "headline-lg": [
+                            "Geist"
+                    ],
+                    "headline-md": [
+                            "Geist"
+                    ],
+                    "label-md": [
+                            "Geist"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "caption": [
+                            "Inter"
+                    ],
+                    "display-lg": [
+                            "Geist"
+                    ],
+                    "headline-lg-mobile": [
+                            "Geist"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "caption": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+        },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { background-color: #faf8ff; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .shadow-ambient {
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background flex flex-col md:flex-row min-h-screen font-body-md">
+<!-- TopNavBar (Mobile Only) -->
+<nav class="md:hidden flex justify-between items-center w-full px-sm h-16 bg-surface dark:bg-surface-container border-b border-surface-variant dark:border-outline-variant sticky top-0 z-50">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">OutLoud</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small, circular avatar portrait of a professional individual in a corporate setting. High key lighting, clean background, modern professional aesthetic. Head and shoulders only. Minimalist corporate portrait." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6D6W35jGO__uV6PYGmrxHyh4zQSnnX8AjLUQ3Rw4KegXkz1IttaR2VEwMvPVTFPNZ8AVlka-LFtgpdLgcPXGIxVp5Z725A07jpppFUP5AVkxfG97yeV3av0ERJ0ZFuQRcAfBXGAErjVjN684b-wPhhwVeQdoNceyawf2gJgJ1nuv-8wJ0FeIR2-cgXIHh1hqNbDmG4B1XUScPgQvxX9Z5QcYKGQEIUdvNTKad6nL22x5xlAKfXqDTWA">
+</div>
+</nav>
+<!-- SideNavBar (Desktop Only) -->
+<aside class="hidden md:flex flex-col h-screen p-md gap-sm w-64 docked left-0 bg-surface-container-low dark:bg-surface-container-lowest border-r border-surface-variant dark:border-outline-variant sticky top-0 z-40">
+<div class="flex flex-col mb-xl">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">OutLoud</div>
+<div class="font-caption text-caption text-on-surface-variant mt-1">Speak with Confidence</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 bg-secondary-container dark:bg-on-secondary-container text-on-secondary-container dark:text-on-secondary rounded-lg px-4 py-2 font-medium scale-[0.99] transition-transform" href="#">
+<span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-on-surface-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-lg hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">mic_none</span>
+<span class="font-label-md text-label-md">Practice</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-on-surface-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-lg hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-on-surface-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-lg hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-4">
+<button class="w-full bg-primary text-on-primary py-2 px-4 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity">Start Practice</button>
+<div class="flex flex-col gap-2 pt-4 border-t border-surface-variant">
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-on-surface-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-lg hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Help</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-on-surface-variant px-4 py-2 hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-lg hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Sign Out</span>
+</a>
+</div>
+<div class="flex items-center gap-3 px-4 py-2">
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A small, circular avatar portrait of a professional individual in a corporate setting. High key lighting, clean background, modern professional aesthetic. Head and shoulders only. Minimalist corporate portrait." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5qEyI7Pc0bGv1OLqiIT49KRanMsB8jKi9ELh3YZ2jtKH3gwr-5YlR54EBthzTrhAGJ_YuxTyCE3SdDqwe0eZLI-8OjuiJhDDuXJDhxYFCe0rvwLoaTEy8kolts74VICDFMZZDlXV-49JkQ8LQMlirM2_RrKpJDLUKJmc7u1jrUaaFuCfsRfGzoFrOGbF16zurWbmMW0cXWhdLjaR-94jRUrCUFZmeNB9GnyK4Yg4P1gl8E7MzJBivxg">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-primary">Shivam</span>
+<span class="font-caption text-caption text-on-surface-variant">Free Plan</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-sm md:p-lg md:ml-0 max-w-container-max mx-auto w-full">
+<header class="mb-xl">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Good morning, Shivam 👋</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4">Ready for today's practice?</p>
+<div class="inline-flex items-center gap-2 bg-surface-variant text-primary-container px-3 py-1.5 rounded-full font-caption text-caption">
+<span class="material-symbols-outlined text-[16px]">info</span>
+                You last practised 4 days ago. Ready to continue?
+            </div>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Primary Action Card (Bento Large) -->
+<section class="lg:col-span-8">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-ambient h-full flex flex-col justify-between relative overflow-hidden group hover:border-primary-fixed-dim transition-colors">
+<div class="absolute top-0 right-0 w-64 h-64 bg-secondary-container opacity-20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary p-2 bg-surface-container-low rounded-lg">bolt</span>
+<span class="font-label-md text-label-md text-secondary uppercase tracking-wider">Recommended Module</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-3">Unexpected Interview Questions</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md mb-6">Practise answering questions you haven't prepared for. Focus on structuring thoughts quickly under pressure.</p>
+<div class="flex items-center gap-4 mb-8">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">timer</span>
+<span class="font-caption text-caption">5 min</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">forum</span>
+<span class="font-caption text-caption">3 questions</span>
+</div>
+</div>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg w-fit hover:bg-on-primary-fixed-variant transition-colors flex items-center gap-2">
+                        Start Practice
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Progress Summary (Bento Small) -->
+<section class="lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-ambient h-full">
+<h3 class="font-label-md text-label-md text-primary mb-4 flex items-center justify-between">
+                        Your Progress
+                        <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">trending_up</span>
+</h3>
+<div class="flex items-baseline gap-2 mb-6">
+<span class="font-display-lg text-display-lg text-primary">4</span>
+<span class="font-body-md text-body-md text-on-surface-variant">sessions completed</span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="font-caption text-caption text-on-surface-variant mb-1 uppercase tracking-wide">Last Focus</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-2.5 py-1 bg-surface-container-low border border-outline-variant text-primary rounded-md font-caption text-caption">Vocabulary</span>
+<span class="px-2.5 py-1 bg-surface-container-low border border-outline-variant text-primary rounded-md font-caption text-caption">Clarity</span>
+</div>
+</div>
+<div>
+<div class="font-caption text-caption text-on-surface-variant mb-1 uppercase tracking-wide">Next Focus</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-2.5 py-1 bg-secondary-container text-on-secondary-container rounded-md font-caption text-caption border border-secondary-fixed-dim">Unexpected questions</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent History List -->
+<section class="lg:col-span-12 mt-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-md text-[20px] font-semibold text-primary">Recent History</h3>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">View All</a>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-ambient overflow-hidden">
+<div class="divide-y divide-surface-variant">
+<!-- History Item 1 -->
+<div class="p-sm md:px-md md:py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary-container shrink-0 group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">mic</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-primary mb-1">Behavioural Interview</div>
+<div class="flex items-center gap-2 font-caption text-caption text-on-surface-variant">
+<span>Yesterday</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Focus: Vocabulary</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 self-end md:self-auto">
+<div class="text-right hidden sm:block">
+<div class="font-label-md text-label-md text-primary">85% Clarity</div>
+<div class="font-caption text-caption text-secondary">Good pacing</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</div>
+<!-- History Item 2 -->
+<div class="p-sm md:px-md md:py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary-container shrink-0 group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-primary mb-1">Self Introduction</div>
+<div class="flex items-center gap-2 font-caption text-caption text-on-surface-variant">
+<span>3 days ago</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>Focus: Fluency</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 self-end md:self-auto">
+<div class="text-right hidden sm:block">
+<div class="font-label-md text-label-md text-primary">78% Clarity</div>
+<div class="font-caption text-caption text-on-surface-variant">2 filler words</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer (Simple version for dashboard) -->
+<footer class="mt-xl pt-md border-t border-surface-variant flex flex-col sm:flex-row justify-between items-center gap-4 text-caption font-caption text-on-surface-variant">
+<div>© 2024 OutLoud Studio. Precision in every word.</div>
+<div class="flex gap-4">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</footer>
+</main>
+</body></html>

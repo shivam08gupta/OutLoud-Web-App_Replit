@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Practice Complete</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts: Geist & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "surface-variant": "#dae2fd",
+                "error-container": "#ffdad6",
+                "inverse-on-surface": "#eef0ff",
+                "on-secondary-container": "#006f67",
+                "primary-container": "#172554",
+                "on-secondary-fixed": "#00201d",
+                "surface-bright": "#faf8ff",
+                "on-error": "#ffffff",
+                "primary": "#000f3f",
+                "on-primary-fixed": "#071747",
+                "on-tertiary-fixed": "#191c1e",
+                "on-tertiary-fixed-variant": "#444749",
+                "surface-container-lowest": "#ffffff",
+                "background": "#faf8ff",
+                "surface-container": "#eaedff",
+                "on-tertiary": "#ffffff",
+                "secondary": "#006a63",
+                "surface-container-highest": "#dae2fd",
+                "tertiary": "#111416",
+                "surface-container-low": "#f2f3ff",
+                "on-secondary": "#ffffff",
+                "on-primary-fixed-variant": "#374475",
+                "on-surface": "#131b2e",
+                "on-primary-container": "#808dc2",
+                "surface-dim": "#d2d9f4",
+                "error": "#ba1a1a",
+                "inverse-primary": "#b7c4fd",
+                "on-primary": "#ffffff",
+                "on-tertiary-container": "#8d9092",
+                "on-background": "#131b2e",
+                "secondary-fixed-dim": "#80d5cb",
+                "tertiary-fixed": "#e0e3e5",
+                "surface-tint": "#4f5c8e",
+                "surface-container-high": "#e2e7ff",
+                "tertiary-container": "#25292b",
+                "outline-variant": "#c6c5d0",
+                "inverse-surface": "#283044",
+                "primary-fixed-dim": "#b7c4fd",
+                "secondary-fixed": "#9cf2e8",
+                "on-secondary-fixed-variant": "#00504a",
+                "secondary-container": "#99efe5",
+                "tertiary-fixed-dim": "#c4c7c9",
+                "on-surface-variant": "#45464f",
+                "primary-fixed": "#dce1ff",
+                "outline": "#767680",
+                "surface": "#faf8ff",
+                "on-error-container": "#93000a"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "gutter": "24px",
+                "md": "24px",
+                "container-max": "1280px",
+                "base": "4px",
+                "lg": "40px",
+                "sm": "16px",
+                "xs": "8px",
+                "xl": "64px"
+        },
+        "fontFamily": {
+                "headline-lg": ["Geist", "sans-serif"],
+                "headline-md": ["Geist", "sans-serif"],
+                "label-md": ["Geist", "sans-serif"],
+                "body-lg": ["Inter", "sans-serif"],
+                "caption": ["Inter", "sans-serif"],
+                "display-lg": ["Geist", "sans-serif"],
+                "headline-lg-mobile": ["Geist", "sans-serif"],
+                "body-md": ["Inter", "sans-serif"]
+        },
+        "fontSize": {
+                "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .animate-fade-up {
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes pulseSubtle {
+    0% { box-shadow: 0 0 0 0 rgba(153, 239, 229, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(153, 239, 229, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(153, 239, 229, 0); }
+  }
+  .animate-pulse-subtle {
+    animation: pulseSubtle 2s infinite;
+  }
+</style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex items-center justify-center p-md md:p-lg">
+<!-- Success Splash Card: Excludes Navigation per rules for Transactional/Confirmation intents -->
+<main class="w-full max-w-[540px] bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_10px_20px_-10px_rgba(0,0,0,0.04)] p-md md:p-xl flex flex-col gap-lg animate-fade-up opacity-0">
+<!-- Header Section -->
+<header class="flex flex-col items-center text-center gap-sm">
+<div class="w-xl h-xl rounded-full bg-secondary-container flex items-center justify-center mb-xs animate-pulse-subtle">
+<span class="material-symbols-outlined text-[32px] text-on-secondary-container" data-icon="task_alt" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Practice complete! 🎉</h1>
+<p class="font-body-md md:font-body-lg text-body-md md:text-body-lg text-on-surface-variant max-w-sm">Great job stepping into the studio today. Here is a summary of your session.</p>
+</header>
+<!-- Metrics Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-sm">
+<!-- Metric 1 -->
+<div class="flex flex-row md:flex-col items-center justify-between md:justify-center p-sm md:p-md bg-surface-container-low rounded-lg border border-surface-variant">
+<span class="font-headline-md text-headline-md text-primary">3</span>
+<span class="font-label-md text-label-md text-on-surface-variant md:mt-base">Questions</span>
+</div>
+<!-- Metric 2 -->
+<div class="flex flex-row md:flex-col items-center justify-between md:justify-center p-sm md:p-md bg-surface-container-low rounded-lg border border-surface-variant relative overflow-hidden">
+<div class="absolute inset-0 bg-secondary/5"></div>
+<span class="font-headline-md text-headline-md text-secondary relative z-10">2</span>
+<span class="font-label-md text-label-md text-on-surface-variant md:mt-base text-center relative z-10">Improvements</span>
+</div>
+<!-- Metric 3 -->
+<div class="flex flex-row md:flex-col items-center justify-between md:justify-center p-sm md:p-md bg-surface-container-low rounded-lg border border-surface-variant">
+<span class="font-headline-md text-headline-md text-on-primary-fixed-variant">1</span>
+<span class="font-label-md text-label-md text-on-surface-variant md:mt-base">Retry</span>
+</div>
+</section>
+<!-- Context & Next Steps -->
+<section class="flex flex-col gap-md border-t border-surface-variant pt-lg">
+<!-- Today's Focus -->
+<div class="flex items-start gap-md p-sm bg-surface rounded-lg">
+<div class="mt-xs">
+<span class="material-symbols-outlined text-secondary" data-icon="track_changes" style="font-variation-settings: 'FILL' 1;">track_changes</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-base">Today's Focus</h3>
+<p class="font-body-md text-body-md text-on-surface font-medium">Vocabulary + Fluency</p>
+</div>
+</div>
+<!-- Next Practice -->
+<div class="flex items-start gap-md p-sm">
+<div class="mt-xs">
+<span class="material-symbols-outlined text-primary-container" data-icon="calendar_month" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-base">Next Practice</h3>
+<p class="font-body-md text-body-md text-on-surface font-medium">Tomorrow: Unexpected follow-up questions</p>
+</div>
+</div>
+</section>
+<!-- Actions -->
+<footer class="flex flex-col gap-sm mt-xs">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-sm px-md rounded-lg hover:bg-on-primary-fixed transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface-container-lowest">
+        Done
+      </button>
+<button class="w-full bg-surface-container-lowest border border-outline-variant text-primary font-label-md text-label-md py-sm px-md rounded-lg hover:bg-surface transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-lowest">
+        Practise Again
+      </button>
+</footer>
+</main>
+</body></html>

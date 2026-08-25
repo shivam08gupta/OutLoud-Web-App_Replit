@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>OutLoud - Onboarding</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#dae2fd",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#eef0ff",
+                      "on-secondary-container": "#006f67",
+                      "primary-container": "#172554",
+                      "on-secondary-fixed": "#00201d",
+                      "surface-bright": "#faf8ff",
+                      "on-error": "#ffffff",
+                      "primary": "#000f3f",
+                      "on-primary-fixed": "#071747",
+                      "on-tertiary-fixed": "#191c1e",
+                      "on-tertiary-fixed-variant": "#444749",
+                      "surface-container-lowest": "#ffffff",
+                      "background": "#faf8ff",
+                      "surface-container": "#eaedff",
+                      "on-tertiary": "#ffffff",
+                      "secondary": "#006a63",
+                      "surface-container-highest": "#dae2fd",
+                      "tertiary": "#111416",
+                      "surface-container-low": "#f2f3ff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#374475",
+                      "on-surface": "#131b2e",
+                      "on-primary-container": "#808dc2",
+                      "surface-dim": "#d2d9f4",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#b7c4fd",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-container": "#8d9092",
+                      "on-background": "#131b2e",
+                      "secondary-fixed-dim": "#80d5cb",
+                      "tertiary-fixed": "#e0e3e5",
+                      "surface-tint": "#4f5c8e",
+                      "surface-container-high": "#e2e7ff",
+                      "tertiary-container": "#25292b",
+                      "outline-variant": "#c6c5d0",
+                      "inverse-surface": "#283044",
+                      "primary-fixed-dim": "#b7c4fd",
+                      "secondary-fixed": "#9cf2e8",
+                      "on-secondary-fixed-variant": "#00504a",
+                      "secondary-container": "#99efe5",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "on-surface-variant": "#45464f",
+                      "primary-fixed": "#dce1ff",
+                      "outline": "#767680",
+                      "surface": "#faf8ff",
+                      "on-error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "md": "24px",
+                      "container-max": "1280px",
+                      "base": "4px",
+                      "lg": "40px",
+                      "sm": "16px",
+                      "xs": "8px",
+                      "xl": "64px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Geist"],
+                      "headline-md": ["Geist"],
+                      "label-md": ["Geist"],
+                      "body-lg": ["Inter"],
+                      "caption": ["Inter"],
+                      "display-lg": ["Geist"],
+                      "headline-lg-mobile": ["Geist"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .option-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .option-card.selected {
+            border-color: #006a63; /* secondary */
+            background-color: #f2f3ff; /* surface-container-low */
+        }
+        .option-card.selected .icon-element {
+            color: #006a63;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md selection:bg-surface-variant">
+<!-- Header (Minimal for Onboarding) -->
+<header class="w-full py-md px-md md:px-lg max-w-container-max mx-auto flex justify-center items-center">
+<div class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">mic</span>
+            OutLoud
+        </div>
+</header>
+<!-- Main Onboarding Container -->
+<main class="flex-grow flex flex-col items-center justify-start w-full max-w-3xl mx-auto px-sm md:px-md mt-lg gap-xl">
+<!-- Progress Indicator -->
+<div class="w-full max-w-xl flex items-center justify-between gap-sm mb-sm px-sm">
+<div class="h-1 flex-1 bg-secondary rounded-full transition-colors duration-300" id="prog-1"></div>
+<div class="h-1 flex-1 bg-surface-variant rounded-full transition-colors duration-300" id="prog-2"></div>
+<div class="h-1 flex-1 bg-surface-variant rounded-full transition-colors duration-300" id="prog-3"></div>
+</div>
+<!-- Step 1: Goal -->
+<div class="w-full flex flex-col gap-lg animate-fade-in" id="step-1">
+<div class="text-center px-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-background mb-base">What are you preparing for?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Select your primary focus to tailor the studio environment.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<!-- Pre-selected option -->
+<button class="option-card selected flex flex-col items-start p-md bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-left group hover:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/50" data-step="1">
+<span class="material-symbols-outlined icon-element mb-sm text-[32px] text-on-surface-variant">work</span>
+<span class="font-headline-md text-headline-md text-on-surface mb-base">Job Interview</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Practice technical, behavioral, or case study questions.</span>
+</button>
+<div class="option-card flex flex-col items-start p-md bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-left opacity-50 cursor-not-allowed relative">
+<span class="absolute top-2 right-2 bg-surface-variant text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Coming soon</span>
+<span class="material-symbols-outlined icon-element mb-sm text-[32px] text-on-surface-variant">co_present</span>
+<span class="font-headline-md text-headline-md text-on-surface mb-base">Presentation</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Rehearse public speaking, pitches, or internal reviews.</span>
+</div>
+<div class="option-card flex flex-col items-start p-md bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-left opacity-50 cursor-not-allowed relative">
+<span class="absolute top-2 right-2 bg-surface-variant text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Coming soon</span>
+<span class="material-symbols-outlined icon-element mb-sm text-[32px] text-on-surface-variant">chat_bubble</span>
+<span class="font-headline-md text-headline-md text-on-surface mb-base">Difficult Conversation</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Roleplay performance reviews or negotiations.</span>
+</div>
+<div class="option-card flex flex-col items-start p-md bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-left opacity-50 cursor-not-allowed relative">
+<span class="absolute top-2 right-2 bg-surface-variant text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Coming soon</span>
+<span class="material-symbols-outlined icon-element mb-sm text-[32px] text-on-surface-variant">apps</span>
+<span class="font-headline-md text-headline-md text-on-surface mb-base">Other</span>
+<span class="font-body-md text-body-md text-on-surface-variant">General confidence building and articulation practice.</span>
+</div>
+</div>
+</div>
+<!-- Step 2: Role (Hidden initially) -->
+<div class="w-full flex flex-col gap-lg animate-fade-in hidden" id="step-2">
+<div class="text-center px-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-background mb-base">What role are you preparing for?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">This helps us curate industry-specific prompts.</p>
+</div>
+<div class="flex flex-col gap-sm max-w-xl mx-auto w-full">
+<button class="option-card flex items-center p-sm bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-left hover:border-secondary hover:bg-surface-container-low group focus:outline-none" data-step="2">
+<span class="material-symbols-outlined icon-element text-on-surface-variant group-hover:text-secondary mr-sm">lightbulb</span>
+<span class="font-headline-md text-headline-md text-on-surface">Product Manager</span>
+</button>
+<button class="option-card flex items-center p-sm bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-left hover:border-secondary hover:bg-surface-container-low group focus:outline-none" data-step="2">
+<span class="material-symbols-outlined icon-element text-on-surface-variant group-hover:text-secondary mr-sm">code</span>
+<span class="font-headline-md text-headline-md text-on-surface">Software Engineer</span>
+</button>
+<button class="option-card flex items-center p-sm bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-left hover:border-secondary hover:bg-surface-container-low group focus:outline-none" data-step="2">
+<span class="material-symbols-outlined icon-element text-on-surface-variant group-hover:text-secondary mr-sm">bar_chart</span>
+<span class="font-headline-md text-headline-md text-on-surface">Data Analyst</span>
+</button>
+<button class="option-card flex items-center p-sm bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-left hover:border-secondary hover:bg-surface-container-low group focus:outline-none" data-step="2">
+<span class="material-symbols-outlined icon-element text-on-surface-variant group-hover:text-secondary mr-sm">campaign</span>
+<span class="font-headline-md text-headline-md text-on-surface">Marketing</span>
+</button>
+<button class="option-card flex items-center p-sm bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-left hover:border-secondary hover:bg-surface-container-low group focus:outline-none" data-step="2">
+<span class="material-symbols-outlined icon-element text-on-surface-variant group-hover:text-secondary mr-sm">more_horiz</span>
+<span class="font-headline-md text-headline-md text-on-surface">Other</span>
+</button>
+</div>
+</div>
+<!-- Step 3: Timing (Hidden initially) -->
+<div class="w-full flex flex-col gap-lg animate-fade-in hidden" id="step-3">
+<div class="text-center px-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-background mb-base">When is your interview?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">We'll help pace your preparation schedule.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-sm max-w-2xl mx-auto w-full">
+<button class="option-card flex items-center justify-center p-md bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-center hover:border-secondary hover:bg-surface-container-low group focus:outline-none" data-step="3">
+<span class="font-headline-md text-headline-md text-on-surface">This week</span>
+</button>
+<button class="option-card flex items-center justify-center p-md bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-center hover:border-secondary hover:bg-surface-container-low group focus:outline-none" data-step="3">
+<span class="font-headline-md text-headline-md text-on-surface">1-2 weeks</span>
+</button>
+<button class="option-card flex items-center justify-center p-md bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-center hover:border-secondary hover:bg-surface-container-low group focus:outline-none" data-step="3">
+<span class="font-headline-md text-headline-md text-on-surface">More than 2 weeks</span>
+</button>
+<button class="option-card flex items-center justify-center p-md bg-surface-container-lowest border-2 border-outline-variant rounded-xl text-center hover:border-secondary hover:bg-surface-container-low group focus:outline-none" data-step="3">
+<span class="font-headline-md text-headline-md text-on-surface">Not scheduled yet</span>
+</button>
+</div>
+</div>
+<!-- Navigation Actions -->
+<div class="w-full max-w-3xl flex justify-between items-center mt-auto mb-lg pt-lg border-t border-surface-variant px-sm">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2 opacity-50 cursor-not-allowed" disabled="" id="btn-back">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                Back
+            </button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-lg py-3 rounded-lg hover:bg-on-primary-fixed-variant transition-colors flex items-center gap-2 shadow-sm" id="btn-next">
+                Continue
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</main>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentStep = 1;
+            const totalSteps = 3;
+            
+            const btnBack = document.getElementById('btn-back');
+            const btnNext = document.getElementById('btn-next');
+            
+            // Handle option selection
+            const optionCards = document.querySelectorAll('.option-card');
+            optionCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const step = this.getAttribute('data-step');
+                    // Remove selected class from all cards in this step
+                    document.querySelectorAll(`.option-card[data-step="${step}"]`).forEach(c => {
+                        c.classList.remove('selected');
+                        c.classList.remove('border-secondary');
+                        c.classList.add('border-outline-variant');
+                    });
+                    
+                    // Add selected class to clicked card
+                    this.classList.add('selected');
+                    this.classList.remove('border-outline-variant');
+                    this.classList.add('border-secondary');
+                });
+            });
+
+            // Handle Navigation
+            function updateUI() {
+                // Hide all steps
+                for (let i = 1; i <= totalSteps; i++) {
+                    document.getElementById(`step-${i}`).classList.add('hidden');
+                    document.getElementById(`prog-${i}`).classList.replace('bg-secondary', 'bg-surface-variant');
+                }
+                
+                // Show current step
+                document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+                
+                // Update Progress Bar
+                for (let i = 1; i <= currentStep; i++) {
+                    document.getElementById(`prog-${i}`).classList.replace('bg-surface-variant', 'bg-secondary');
+                }
+
+                // Update Buttons
+                if (currentStep === 1) {
+                    btnBack.classList.add('opacity-50', 'cursor-not-allowed');
+                    btnBack.disabled = true;
+                } else {
+                    btnBack.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btnBack.disabled = false;
+                }
+
+                if (currentStep === totalSteps) {
+                    btnNext.innerHTML = 'Finish <span class="material-symbols-outlined text-[18px]">check</span>';
+                } else {
+                    btnNext.innerHTML = 'Continue <span class="material-symbols-outlined text-[18px]">arrow_forward</span>';
+                }
+            }
+
+            btnNext.addEventListener('click', () => {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateUI();
+                } else {
+                    // Final action (e.g., submit form, redirect)
+                    console.log("Onboarding Complete");
+                }
+            });
+
+            btnBack.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateUI();
+                }
+            });
+        });
+    </script>
+</body></html>

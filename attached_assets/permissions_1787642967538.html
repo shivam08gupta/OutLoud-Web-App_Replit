@@ -1,0 +1,164 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>OutLoud - Permissions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "surface-variant": "#dae2fd",
+                            "error-container": "#ffdad6",
+                            "inverse-on-surface": "#eef0ff",
+                            "on-secondary-container": "#006f67",
+                            "primary-container": "#172554",
+                            "on-secondary-fixed": "#00201d",
+                            "surface-bright": "#faf8ff",
+                            "on-error": "#ffffff",
+                            "primary": "#000f3f",
+                            "on-primary-fixed": "#071747",
+                            "on-tertiary-fixed": "#191c1e",
+                            "on-tertiary-fixed-variant": "#444749",
+                            "surface-container-lowest": "#ffffff",
+                            "background": "#faf8ff",
+                            "surface-container": "#eaedff",
+                            "on-tertiary": "#ffffff",
+                            "secondary": "#006a63",
+                            "surface-container-highest": "#dae2fd",
+                            "tertiary": "#111416",
+                            "surface-container-low": "#f2f3ff",
+                            "on-secondary": "#ffffff",
+                            "on-primary-fixed-variant": "#374475",
+                            "on-surface": "#131b2e",
+                            "on-primary-container": "#808dc2",
+                            "surface-dim": "#d2d9f4",
+                            "error": "#ba1a1a",
+                            "inverse-primary": "#b7c4fd",
+                            "on-primary": "#ffffff",
+                            "on-tertiary-container": "#8d9092",
+                            "on-background": "#131b2e",
+                            "secondary-fixed-dim": "#80d5cb",
+                            "tertiary-fixed": "#e0e3e5",
+                            "surface-tint": "#4f5c8e",
+                            "surface-container-high": "#e2e7ff",
+                            "tertiary-container": "#25292b",
+                            "outline-variant": "#c6c5d0",
+                            "inverse-surface": "#283044",
+                            "primary-fixed-dim": "#b7c4fd",
+                            "secondary-fixed": "#9cf2e8",
+                            "on-secondary-fixed-variant": "#00504a",
+                            "secondary-container": "#99efe5",
+                            "tertiary-fixed-dim": "#c4c7c9",
+                            "on-surface-variant": "#45464f",
+                            "primary-fixed": "#dce1ff",
+                            "outline": "#767680",
+                            "surface": "#faf8ff",
+                            "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "gutter": "24px",
+                            "md": "24px",
+                            "container-max": "1280px",
+                            "base": "4px",
+                            "lg": "40px",
+                            "sm": "16px",
+                            "xs": "8px",
+                            "xl": "64px"
+                    },
+                    "fontFamily": {
+                            "headline-lg": ["Geist"],
+                            "headline-md": ["Geist"],
+                            "label-md": ["Geist"],
+                            "body-lg": ["Inter"],
+                            "caption": ["Inter"],
+                            "display-lg": ["Geist"],
+                            "headline-lg-mobile": ["Geist"],
+                            "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                            "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                            "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                            "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                            "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                            "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex items-center justify-center p-sm md:p-md overflow-hidden relative">
+<!-- Ambient background layer -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-low to-surface opacity-50 z-0"></div>
+<!-- Main Content Canvas (No Nav Shell per Transactional Rule) -->
+<main class="relative z-10 w-full max-w-[600px] mx-auto">
+<!-- Card Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md md:p-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.04)] flex flex-col items-center text-center animate-fade-in-up">
+<!-- Illustrative Icon Cluster -->
+<div class="flex items-center justify-center gap-xs mb-sm">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[32px] text-primary" data-icon="videocam">videocam</span>
+</div>
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center -ml-4 border-2 border-surface-container-lowest relative z-10">
+<span class="material-symbols-outlined text-[32px] text-secondary" data-icon="mic" data-weight="fill" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</div>
+<!-- Headlines & Copy -->
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">
+                Let's make this feel like a real scenario</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-md max-w-[480px]">
+                OutLoud uses your microphone so you can answer questions naturally. Your camera creates a more realistic interview environment, like practising in front of a mirror.
+            </p>
+<!-- Privacy Reassurance Box -->
+<div class="w-full bg-surface-container-low rounded-lg p-sm mb-lg flex items-start gap-sm text-left border border-surface-variant">
+<span class="material-symbols-outlined text-secondary shrink-0 mt-0.5" data-icon="shield_lock" data-weight="fill" style="font-variation-settings: 'FILL' 1;">shield_lock</span>
+<div>
+<p class="font-caption text-caption text-on-surface-variant leading-relaxed">
+<strong class="font-medium text-on-surface">Privacy first.</strong> We don't analyse your appearance, eye contact, body language, or emotions.
+                    </p>
+</div>
+</div>
+<!-- Action Area -->
+<div class="w-full flex flex-col gap-sm">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-sm px-sm rounded-lg hover:bg-on-primary-fixed transition-colors duration-200 flex items-center justify-center gap-xs focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface-container-lowest">
+                    Allow Camera &amp; Microphone
+                </button>
+<button class="w-full bg-surface-container-lowest text-primary border border-outline-variant font-label-md text-label-md py-sm px-sm rounded-lg hover:bg-surface-container-low transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface-container-lowest">
+                    Use Microphone Only
+                </button>
+</div>
+</div>
+<!-- Minimal footer/close intent for transactional screen if needed, though omitted here to keep focus on action -->
+</main>
+</body></html>

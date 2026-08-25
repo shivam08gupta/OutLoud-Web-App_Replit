@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OutLoud - Interview Practice</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#dae2fd",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#eef0ff",
+                      "on-secondary-container": "#006f67",
+                      "primary-container": "#172554",
+                      "on-secondary-fixed": "#00201d",
+                      "surface-bright": "#faf8ff",
+                      "on-error": "#ffffff",
+                      "primary": "#000f3f",
+                      "on-primary-fixed": "#071747",
+                      "on-tertiary-fixed": "#191c1e",
+                      "on-tertiary-fixed-variant": "#444749",
+                      "surface-container-lowest": "#ffffff",
+                      "background": "#faf8ff",
+                      "surface-container": "#eaedff",
+                      "on-tertiary": "#ffffff",
+                      "secondary": "#006a63",
+                      "surface-container-highest": "#dae2fd",
+                      "tertiary": "#111416",
+                      "surface-container-low": "#f2f3ff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#374475",
+                      "on-surface": "#131b2e",
+                      "on-primary-container": "#808dc2",
+                      "surface-dim": "#d2d9f4",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#b7c4fd",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-container": "#8d9092",
+                      "on-background": "#131b2e",
+                      "secondary-fixed-dim": "#80d5cb",
+                      "tertiary-fixed": "#e0e3e5",
+                      "surface-tint": "#4f5c8e",
+                      "surface-container-high": "#e2e7ff",
+                      "tertiary-container": "#25292b",
+                      "outline-variant": "#c6c5d0",
+                      "inverse-surface": "#283044",
+                      "primary-fixed-dim": "#b7c4fd",
+                      "secondary-fixed": "#9cf2e8",
+                      "on-secondary-fixed-variant": "#00504a",
+                      "secondary-container": "#99efe5",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "on-surface-variant": "#45464f",
+                      "primary-fixed": "#dce1ff",
+                      "outline": "#767680",
+                      "surface": "#faf8ff",
+                      "on-error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "md": "24px",
+                      "container-max": "1280px",
+                      "base": "4px",
+                      "lg": "40px",
+                      "sm": "16px",
+                      "xs": "8px",
+                      "xl": "64px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Geist"],
+                      "headline-md": ["Geist"],
+                      "label-md": ["Geist"],
+                      "body-lg": ["Inter"],
+                      "caption": ["Inter"],
+                      "display-lg": ["Geist"],
+                      "headline-lg-mobile": ["Geist"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                      "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                      "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                      "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                      "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                      "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                      "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                      "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }]
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(186, 26, 26, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(186, 26, 26, 0); }
+        }
+
+        .waveform-bar {
+            width: 4px;
+            background-color: #006a63;
+            border-radius: 2px;
+            animation: wave 1.2s ease-in-out infinite;
+            transform-origin: bottom;
+        }
+
+        .waveform-bar:nth-child(1) { animation-delay: 0.0s; height: 12px; }
+        .waveform-bar:nth-child(2) { animation-delay: 0.1s; height: 24px; }
+        .waveform-bar:nth-child(3) { animation-delay: 0.2s; height: 16px; }
+        .waveform-bar:nth-child(4) { animation-delay: 0.3s; height: 32px; }
+        .waveform-bar:nth-child(5) { animation-delay: 0.4s; height: 20px; }
+        .waveform-bar:nth-child(6) { animation-delay: 0.5s; height: 28px; }
+        .waveform-bar:nth-child(7) { animation-delay: 0.6s; height: 14px; }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+            50% { transform: scaleY(1); opacity: 1; }
+        }
+
+        .hidden-state {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="bg-primary text-on-primary h-screen flex flex-col font-body-md overflow-hidden selection:bg-secondary selection:text-on-secondary">
+<header class="w-full h-16 flex justify-between items-center px-md md:px-lg max-w-container-max mx-auto shrink-0 border-b border-on-primary-fixed-variant/30">
+<button class="flex items-center gap-xs text-on-primary-fixed-dim hover:text-on-primary transition-colors focus:outline-none focus:ring-2 focus:ring-secondary rounded p-1">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+<span class="font-label-md text-label-md">Exit Practice</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-on-primary tracking-tight">OutLoud</div>
+<div class="w-[100px]"></div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-sm md:px-lg py-md md:py-lg flex flex-col md:flex-row gap-gutter overflow-hidden">
+<div class="w-full h-64 md:h-full bg-surface-container-lowest rounded-[16px] border border-outline-variant p-base relative overflow-hidden flex flex-col shadow-sm shrink-0 md:shrink md:w-5/12">
+<div class="absolute top-sm left-sm z-10 flex gap-xs">
+<div class="bg-tertiary/80 backdrop-blur-sm text-on-tertiary font-label-md text-label-md px-3 py-1.5 rounded-full flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="videocam">videocam</span>
+                    Camera On
+                <span class="border-l border-on-tertiary/30 ml-1 pl-2">You</span></div>
+</div>
+<img class="w-full h-full object-cover rounded-xl" data-alt="A professional headshot of a confident individual in a brightly lit, modern office environment. The person is looking directly at the camera, conveying focus and executive presence. The lighting is soft and even, highlighting a calm and composed expression. The background is slightly blurred, featuring clean architectural lines and subtle indoor plants, adhering to a sophisticated corporate modern aesthetic. The image tone is pristine, sharp, and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA08r8nRQSCXeNQekcv0zmNBt5ThEv0lUJAMPuKG0E-6NtIvo2XEfC4pf9jJ-Lugo85EDzfeQT6SPGFmeSULFLWwtugbu5loHyrOG7OewSWoPlFupxDLBMENt7kQl1pFsU8N0-inJrSFl2tPmVHOdjd_mX_SMcLKiNT5GVq9N5jiqq5oOU0XKjUXgeMhD3YLg-kHYjNl58-3BJn_DWqXkzzuOMTVnnn5FkfA2kGoWWXYCcK9LEgIEoSCA"/>
+<div class="absolute inset-0 border-4 border-error rounded-xl pointer-events-none hidden-state transition-all duration-300" id="recording-overlay"></div>
+</div>
+<div class="w-full bg-surface-container-lowest rounded-[16px] border border-outline-variant shadow-sm flex flex-col h-full overflow-y-auto md:w-7/12">
+<div class="p-md md:p-lg flex-grow flex flex-col">
+<div class="flex items-center justify-between mb-xl">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="font-label-md text-label-md uppercase tracking-wider text-secondary">Behavioural Interview</span>
+</div>
+<div class="bg-surface-container py-1 px-3 rounded-full border border-outline-variant/50">
+<span class="font-label-md text-label-md text-on-surface">Question 1 of 3</span>
+</div>
+</div>
+<div class="mb-lg flex-grow">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-sm text-balance">
+                        "Tell me about a time when you disagreed with a stakeholder."
+                    </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant text-balance">
+                        Take a moment to think. There's no need to rush. Focus on outlining the situation, your specific action, and the constructive outcome.
+                    </p>
+</div>
+</div>
+<div class="p-md md:p-lg bg-surface border-t border-outline-variant/30 rounded-b-[16px]">
+<div class="flex flex-col gap-sm" id="state-ready">
+<button class="w-full bg-secondary text-on-secondary font-label-md text-label-md py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-on-secondary-container transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface" id="btn-start">
+<span class="material-symbols-outlined" data-icon="mic" data-weight="fill">mic</span>
+                        Start Recording
+                    </button>
+<p class="text-center font-caption text-caption text-on-surface-variant">
+                        Your camera and microphone are ready.
+                    </p>
+</div>
+<div class="flex-col gap-md hidden-state" id="state-recording">
+<div class="flex items-center justify-between bg-surface-container-low p-sm rounded-lg border border-outline-variant/50 mb-sm">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-error pulse-dot"></div>
+<span class="font-label-md text-label-md text-on-surface flex items-center gap-1">
+                                Recording <span class="tabular-nums font-mono" id="timer-display">00:00</span>
+</span>
+</div>
+<div class="flex items-end h-8 gap-[2px] px-2">
+<div class="waveform-bar"></div>
+<div class="waveform-bar"></div>
+<div class="waveform-bar"></div>
+<div class="waveform-bar"></div>
+<div class="waveform-bar"></div>
+<div class="waveform-bar"></div>
+<div class="waveform-bar"></div>
+</div>
+</div>
+<button class="w-full bg-surface-container-lowest border-2 border-secondary text-on-surface font-label-md text-label-md py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface" id="btn-stop">
+<span class="material-symbols-outlined text-secondary" data-icon="stop_circle" data-weight="fill">stop_circle</span>
+                        Stop &amp; Submit
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnStart = document.getElementById('btn-start');
+            const btnStop = document.getElementById('btn-stop');
+            const stateReady = document.getElementById('state-ready');
+            const stateRecording = document.getElementById('state-recording');
+            const recordingOverlay = document.getElementById('recording-overlay');
+            const timerDisplay = document.getElementById('timer-display');
+            
+            let timerInterval;
+            let seconds = 0;
+
+            function updateTimer() {
+                seconds++;
+                const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+                const secs = (seconds % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }
+
+            btnStart.addEventListener('click', () => {
+                stateReady.classList.add('hidden-state');
+                stateRecording.classList.remove('hidden-state');
+                stateRecording.classList.add('flex');
+                recordingOverlay.classList.remove('hidden-state');
+                
+                seconds = 41; 
+                updateTimer(); 
+                timerInterval = setInterval(updateTimer, 1000);
+            });
+
+            btnStop.addEventListener('click', () => {
+                clearInterval(timerInterval);
+                
+                btnStop.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> Submitting...';
+                btnStop.classList.add('opacity-80', 'cursor-not-allowed');
+                
+                setTimeout(() => {
+                    alert('Submission complete. Progressing to next screen (simulated).');
+                    
+                    stateRecording.classList.add('hidden-state');
+                    stateRecording.classList.remove('flex');
+                    stateReady.classList.remove('hidden-state');
+                    recordingOverlay.classList.add('hidden-state');
+                    btnStop.innerHTML = '<span class="material-symbols-outlined text-secondary" data-weight="fill" data-icon="stop_circle">stop_circle</span> Stop & Submit';
+                    btnStop.classList.remove('opacity-80', 'cursor-not-allowed');
+                    seconds = 0;
+                    timerDisplay.textContent = "00:00";
+                }, 1500);
+            });
+        });
+    </script>
+</body></html>

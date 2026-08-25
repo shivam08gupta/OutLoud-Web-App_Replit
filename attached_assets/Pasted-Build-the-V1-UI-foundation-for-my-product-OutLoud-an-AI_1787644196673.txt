@@ -1,0 +1,239 @@
+Build the V1 UI foundation for my product "OutLoud", an AI-powered speaking practice platform for job seekers who can understand/read English but lack confidence speaking English in realistic interview situations.
+
+IMPORTANT:
+This is BUILD 1 of a staged MVP. Focus ONLY on the frontend UI, routing, responsive behaviour, and basic navigation/interactions.
+
+DO NOT implement yet:
+- Authentication or database
+- Speech-to-text
+- Microphone recording
+- Camera access
+- LLM/API integration
+- AI-generated feedback
+- Mixpanel
+- External APIs
+- Real user/session persistence
+- Email notifications
+- V2 features
+
+I have attached 11 HTML files generated from Google Stitch. They are the PRIMARY visual references for the application.
+
+Use these files to reproduce the visual design, layout, typography, spacing, cards, navigation, buttons, hierarchy, and responsive behaviour as closely as practical.
+
+The files include:
+1. Landing Page
+2. Sign In
+3. Dashboard
+4. Onboarding
+5. Permissions
+6. Interview Practice
+7. Session Complete
+8. AI Feedback
+9. Returning User
+10. Mobile Interview Practice
+11. Mobile Dashboard
+
+The two mobile HTML files are RESPONSIVE DESIGN REFERENCES only. Do not create separate mobile routes or duplicate pages. Build one responsive web application that adapts to desktop and mobile.
+
+PRODUCT CONTEXT
+
+Target user:
+Nervous job seekers preparing for interviews who understand English but struggle with speaking confidently, finding the right words, maintaining clarity, and responding spontaneously to unexpected interview questions.
+
+Core V1 promise:
+"Practise realistic job interview conversations, speak your answers out loud, and get focused feedback that helps you improve your next response."
+
+V1 ONLY supports:
+Job Interview.
+
+On the onboarding screen:
+- Job Interview must be selectable.
+- Presentation = Coming Soon, disabled and visually muted.
+- Difficult Conversation = Coming Soon, disabled and visually muted.
+- Other = Coming Soon, disabled and visually muted.
+- Do not allow the three V2 options to be selected.
+
+SCREENS AND ROUTES
+
+Create a coherent flow for these screens:
+
+1. Landing Page
+Route: /
+- OutLoud branding
+- Hero message based on the Stitch reference
+- Primary CTA: Start Practising
+- Secondary CTA: I already have an account
+- Navigation links such as Practice, History, About where appropriate
+- Preserve the calm, professional visual style from Stitch.
+
+2. Sign In
+Route: /signin
+- Reproduce the Stitch design.
+- Google sign-in and email/password UI can remain visual placeholders for now.
+- Buttons should provide sensible navigation where appropriate, but do not implement authentication.
+
+3. Dashboard
+Route: /dashboard
+- Reproduce the Stitch dashboard.
+- Show the recommended practice module.
+- Show progress/recent history cards as shown in the reference.
+- Start Practice should navigate into the onboarding/practice flow.
+
+4. Onboarding
+Route: /onboarding
+- Reproduce the Stitch layout.
+- Only Job Interview is active/selectable.
+- Presentation, Difficult Conversation, and Other are disabled and labelled "COMING SOON".
+- Keep the three-step progress indicator from the reference.
+- Continue should move to Permissions.
+
+5. Permissions
+Route: /permissions
+- Reproduce the Stitch screen.
+- Explain that microphone is required for speaking practice.
+- Explain that camera creates a realistic practice scenario.
+- Clearly state that OutLoud does NOT analyse appearance, eye contact, body language, or emotions in V1.
+- Buttons:
+  "Allow Camera & Microphone"
+  "Use Microphone Only"
+- For this build, these can navigate to the Interview Practice screen without requesting real browser permissions yet.
+
+6. Interview Practice
+Route: /practice
+This is one of the most important V1 screens.
+
+Desktop layout:
+- Question/content area: approximately 50-60% of the main practice area.
+- Camera preview: approximately 30-40%.
+- Remaining space for controls/status.
+- The question must remain visually dominant.
+- Camera should be clearly labelled "You" or "Camera Preview".
+- Use the Stitch reference for the visual hierarchy.
+- Keep "Question 1 of 3".
+- Keep Start Recording as a visual interaction for now.
+- Do not implement real recording yet.
+- Do not analyse camera/video.
+
+Mobile layout:
+Use the supplied mobile Stitch reference.
+Do not simply shrink the desktop layout.
+Reorganise the hierarchy appropriately for a mobile screen.
+
+7. Session Complete
+Route: /complete
+- Reproduce the Stitch completion screen.
+- Show session summary cards.
+- Show today's focus and next practice.
+- "Practice Again" should navigate back toward practice.
+- "Done" should navigate to dashboard.
+
+8. AI Feedback
+Route: /feedback
+- Reproduce the Stitch AI feedback design.
+- Show "What went well".
+- Show "Focus on" areas.
+- Show "Try saying it this way".
+- Include "Try Again" and "Next Question".
+- Include a subtle "Help us improve OutLoud" feedback CTA/link near the bottom.
+- This feedback is STATIC placeholder content in Build 1.
+- Do not connect an LLM yet.
+
+9. Returning User
+Route: /returning
+- Reproduce the returning-user experience from Stitch.
+- Show last practice information.
+- Show today's challenge.
+- Show progress.
+- Provide a clear CTA to start today's practice.
+- This is a visual representation only in Build 1. No real persistence yet.
+
+NAVIGATION
+
+Implement basic client-side navigation between the screens so I can demonstrate the product flow.
+
+Primary demonstration flow:
+
+Landing
+→ Sign In / Start Practising
+→ Onboarding
+→ Permissions
+→ Interview Practice
+→ Session Complete
+→ AI Feedback
+→ Dashboard
+
+Also make the returning-user screen accessible for demonstration.
+
+Do not create unnecessary pages.
+
+DESIGN SYSTEM
+
+Stay very close to the Stitch references.
+
+Overall feel:
+- Professional
+- Calm
+- Trustworthy
+- Soothing
+- Minimal
+- Designed for nervous first-time users
+- Avoid excessive animations, gradients, visual noise, or gamification.
+
+Use the existing Stitch colour language:
+- Deep navy for primary actions and important headings
+- Very light lavender/off-white backgrounds
+- Soft teal/aqua for positive states and secondary accents
+- Light borders
+- Rounded cards
+- Strong readability and accessible contrast
+
+Do not introduce a completely different visual style.
+
+RESPONSIVE DESIGN
+
+The application must work on:
+- Desktop
+- Tablet
+- Mobile
+
+Use the supplied mobile Stitch HTML files as references for responsive behaviour.
+
+Do not create separate mobile pages.
+
+CODE QUALITY
+
+- Use the existing React + Vite project.
+- Create reusable components where appropriate.
+- Keep routing clean.
+- Keep the code easy to modify later.
+- Do not install unnecessary libraries.
+- Do not add a backend.
+- Do not add unnecessary dependencies.
+- Do not delete or modify the supplied Stitch reference HTML files.
+- Keep the reference files available for future development.
+
+IMPORTANT CREDIT CONSTRAINT
+
+I have approximately $14 of Replit credits remaining.
+
+Therefore:
+- Do not over-engineer.
+- Do not implement features not requested above.
+- Do not install unnecessary packages.
+- Do not refactor repeatedly.
+- Do not spend time implementing AI/backend functionality.
+- Complete the UI foundation in this build and then stop.
+
+SUCCESS CRITERIA FOR THIS BUILD
+
+When finished, I should be able to:
+1. Open the OutLoud web app.
+2. Navigate through the main V1 journey.
+3. See the Stitch-inspired UI on every screen.
+4. Navigate between the screens.
+5. See the correct V1/V2 distinction on onboarding.
+6. See the responsive mobile layouts.
+7. Demonstrate the practice → complete → feedback flow.
+8. Demonstrate the returning-user screen.
+
+Do not move on to AI, recording, authentication, Mixpanel, database, or backend functionality until I explicitly ask for Build 2.

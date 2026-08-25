@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OutLoud - Dashboard</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#374475",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#25292b",
+                      "tertiary-fixed": "#e0e3e5",
+                      "on-secondary-fixed-variant": "#00504a",
+                      "on-secondary-container": "#006f67",
+                      "tertiary": "#111416",
+                      "surface-container-high": "#e2e7ff",
+                      "secondary-fixed-dim": "#80d5cb",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#444749",
+                      "surface": "#faf8ff",
+                      "on-secondary": "#ffffff",
+                      "background": "#faf8ff",
+                      "secondary-fixed": "#9cf2e8",
+                      "on-error-container": "#93000a",
+                      "inverse-on-surface": "#eef0ff",
+                      "primary-container": "#172554",
+                      "surface-container-highest": "#dae2fd",
+                      "primary-fixed-dim": "#b7c4fd",
+                      "inverse-surface": "#283044",
+                      "on-surface": "#131b2e",
+                      "on-primary-container": "#808dc2",
+                      "on-tertiary-fixed": "#191c1e",
+                      "on-error": "#ffffff",
+                      "primary": "#000f3f",
+                      "surface-container-low": "#f2f3ff",
+                      "error": "#ba1a1a",
+                      "surface-bright": "#faf8ff",
+                      "secondary-container": "#99efe5",
+                      "outline-variant": "#c6c5d0",
+                      "on-background": "#131b2e",
+                      "secondary": "#006a63",
+                      "on-secondary-fixed": "#00201d",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#dce1ff",
+                      "on-tertiary-container": "#8d9092",
+                      "surface-dim": "#d2d9f4",
+                      "outline": "#767680",
+                      "surface-container": "#eaedff",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#dae2fd",
+                      "on-surface-variant": "#45464f",
+                      "surface-tint": "#4f5c8e",
+                      "inverse-primary": "#b7c4fd",
+                      "on-primary-fixed": "#071747"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "64px",
+                      "base": "4px",
+                      "sm": "16px",
+                      "xs": "8px",
+                      "lg": "40px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "md": "24px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Geist"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "headline-lg": [
+                              "Geist"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Geist"
+                      ],
+                      "label-md": [
+                              "Geist"
+                      ],
+                      "caption": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter:wght@400;500&display=swap');
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row antialiased">
+<!-- Mobile Top Navigation Bar -->
+<header class="md:hidden flex justify-between items-center w-full px-sm h-16 bg-surface border-b border-surface-variant sticky top-0 z-50">
+<div class="flex items-center gap-xs">
+<span class="font-headline-md text-headline-md-mobile font-bold text-primary">OutLoud</span>
+</div>
+<div class="flex items-center gap-sm">
+<button aria-label="Notifications" class="p-2 text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button aria-label="Menu" class="p-2 text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</header>
+<!-- Side Navigation Bar (Desktop) -->
+<aside class="hidden md:flex flex-col h-screen w-64 bg-surface-container-low border-r border-surface-variant p-md gap-sm sticky top-0">
+<!-- Header -->
+<div class="flex flex-col gap-xs mb-lg">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-md text-headline-md">S</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">OutLoud</h1>
+<p class="font-caption text-caption text-on-surface-variant">Speak with Confidence</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 flex flex-col gap-xs">
+<a aria-current="page" class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-2 font-medium scale-[0.99] transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="mic_none">mic_none</span>
+<span class="font-label-md text-label-md">Practice</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<!-- CTA -->
+<div class="mb-sm">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-sm rounded-lg hover:bg-on-primary-fixed-variant transition-colors duration-200 flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                Start Practice
+            </button>
+</div>
+<!-- Footer Links -->
+<div class="flex flex-col gap-xs mt-auto pt-sm border-t border-surface-variant">
+<a class="flex items-center gap-sm text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-md text-label-md">Help</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col min-h-screen">
+<!-- Content Area -->
+<div class="flex-1 px-sm md:px-lg py-lg max-w-container-max mx-auto w-full">
+<!-- Page Header -->
+<div class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-xs">Welcome back, Shivam 👋</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">You last practised 5 days ago. Ready to get back into practice?</p>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main Column (Left) -->
+<div class="lg:col-span-8 flex flex-col gap-gutter">
+<!-- Featured Practice Card -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow duration-300">
+<!-- Subtle Background Accent -->
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-secondary-container rounded-full blur-3xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-xs text-secondary mb-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Today's Challenge</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Unexpected Questions</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md max-w-2xl">Perfect for getting back into the flow. Practise thinking on your feet with randomized questions.</p>
+<div class="flex items-center gap-sm mb-lg">
+<div class="flex items-center gap-xs text-on-surface-variant bg-surface-container-low px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[16px]" data-icon="timer">timer</span>
+<span class="font-caption text-caption">5 min</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant bg-surface-container-low px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[16px]" data-icon="question_answer">question_answer</span>
+<span class="font-caption text-caption">3 questions</span>
+</div>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-on-primary-fixed-variant transition-colors duration-200 inline-flex items-center gap-xs">
+                                Start Today's Practice
+                                <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Recent Activity Bento -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm hover:border-outline-variant transition-colors duration-200 cursor-pointer">
+<div class="flex items-center justify-between mb-sm">
+<h4 class="font-label-md text-label-md text-primary">Resume Draft</h4>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="more_horiz">more_horiz</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-md">Product Manager Interview - Mock Session 1</p>
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>Drafted 5 days ago</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="edit_document">edit_document</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm hover:border-outline-variant transition-colors duration-200 cursor-pointer">
+<div class="flex items-center justify-between mb-sm">
+<h4 class="font-label-md text-label-md text-primary">Review Feedback</h4>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="more_horiz">more_horiz</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-md">Behavioral Questions - STAR Method Practice</p>
+<div class="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+<span>Completed 1 week ago</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="insights">insights</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Column (Right) -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Progress Section -->
+<div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm">
+<h3 class="font-label-md text-label-md text-primary uppercase tracking-wider mb-md">Your Progress</h3>
+<div class="flex flex-col gap-md">
+<!-- Metric 1 -->
+<div>
+<p class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">4</p>
+<p class="font-body-md text-body-md text-on-surface-variant">sessions completed</p>
+</div>
+<div class="h-px bg-surface-variant w-full"></div>
+<!-- Metric 2 -->
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Last focus</p>
+<p class="font-body-md text-body-md text-primary font-medium">Vocabulary</p>
+</div>
+<div class="h-px bg-surface-variant w-full"></div>
+<!-- Metric 3 -->
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Today's challenge</p>
+<p class="font-body-md text-body-md text-primary font-medium">Unexpected questions</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full bg-surface-container py-md px-sm md:px-lg mt-auto border-t border-surface-variant flex flex-col md:flex-row justify-between items-center gap-sm">
+<span class="font-label-md text-label-md font-bold text-primary">OutLoud</span>
+<div class="flex flex-wrap gap-sm justify-center">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Contact Support</a>
+</div>
+<p class="font-caption text-caption text-on-surface-variant">© 2024 OutLoud Studio. Precision in every word.</p>
+</footer>
+</main>
+</body></html>

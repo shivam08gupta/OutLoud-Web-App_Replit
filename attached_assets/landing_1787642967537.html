@@ -1,0 +1,286 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>OutLoud - Confident Interview Practice</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#dae2fd",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#eef0ff",
+                      "on-secondary-container": "#006f67",
+                      "primary-container": "#172554",
+                      "on-secondary-fixed": "#00201d",
+                      "surface-bright": "#faf8ff",
+                      "on-error": "#ffffff",
+                      "primary": "#000f3f",
+                      "on-primary-fixed": "#071747",
+                      "on-tertiary-fixed": "#191c1e",
+                      "on-tertiary-fixed-variant": "#444749",
+                      "surface-container-lowest": "#ffffff",
+                      "background": "#faf8ff",
+                      "surface-container": "#eaedff",
+                      "on-tertiary": "#ffffff",
+                      "secondary": "#006a63",
+                      "surface-container-highest": "#dae2fd",
+                      "tertiary": "#111416",
+                      "surface-container-low": "#f2f3ff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#374475",
+                      "on-surface": "#131b2e",
+                      "on-primary-container": "#808dc2",
+                      "surface-dim": "#d2d9f4",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#b7c4fd",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-container": "#8d9092",
+                      "on-background": "#131b2e",
+                      "secondary-fixed-dim": "#80d5cb",
+                      "tertiary-fixed": "#e0e3e5",
+                      "surface-tint": "#4f5c8e",
+                      "surface-container-high": "#e2e7ff",
+                      "tertiary-container": "#25292b",
+                      "outline-variant": "#c6c5d0",
+                      "inverse-surface": "#283044",
+                      "primary-fixed-dim": "#b7c4fd",
+                      "secondary-fixed": "#9cf2e8",
+                      "on-secondary-fixed-variant": "#00504a",
+                      "secondary-container": "#99efe5",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "on-surface-variant": "#45464f",
+                      "primary-fixed": "#dce1ff",
+                      "outline": "#767680",
+                      "surface": "#faf8ff",
+                      "on-error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "md": "24px",
+                      "container-max": "1280px",
+                      "base": "4px",
+                      "lg": "40px",
+                      "sm": "16px",
+                      "xs": "8px",
+                      "xl": "64px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Geist"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ],
+                      "label-md": [
+                              "Geist"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "caption": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "headline-lg-mobile": [
+                              "Geist"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .input-focus-ring:focus {
+            border-color: #0F766E;
+            box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.1);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-surface-container border-b border-surface-variant dark:border-outline-variant sticky docked full-width top-0 z-50">
+<div class="flex justify-between items-center w-full px-md md:px-lg max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-sm">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim hover:opacity-80 transition-opacity" href="#">
+                    OutLoud
+                </a>
+</div>
+<div class="hidden md:flex items-center gap-md">
+<!-- Landing page, no active nav state for dashboard tabs -->
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+                    Practice
+                </a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+                    History
+                </a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200" href="#">
+                    About
+                </a>
+</div>
+<div class="flex items-center gap-md">
+<button aria-label="notifications" class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button aria-label="Menu" class="md:hidden text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="hidden md:flex gap-sm">
+<a class="font-label-md text-label-md border border-outline-variant text-primary px-sm py-2 rounded flex items-center justify-center hover:bg-surface-variant transition-colors" href="#">
+                        Login
+                    </a>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-md md:px-lg py-xl flex flex-col md:flex-row items-center justify-between gap-xl">
+<!-- Hero Text -->
+<div class="flex flex-col gap-md max-w-2xl">
+<h1 class="font-display-lg text-display-lg md:text-[64px] md:leading-[1.1] text-primary tracking-tight">
+                Practise speaking. Walk into interviews confident.
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                Practise realistic job interview conversations, speak your answers out loud, and get focused feedback to improve your next response.
+            </p>
+<div class="flex flex-col sm:flex-row gap-sm mt-sm">
+<a class="bg-primary text-on-primary font-label-md text-label-md px-lg py-3 rounded-lg flex items-center justify-center hover:bg-opacity-90 transition-opacity" href="#">
+                    Start Practising
+                </a>
+<a class="border border-outline-variant text-primary font-label-md text-label-md px-lg py-3 rounded-lg flex items-center justify-center hover:bg-surface-variant transition-colors" href="#">
+                    I already have an account
+                </a>
+</div>
+<!-- Trust Indicators / Micro Copy -->
+<div class="flex items-center gap-sm mt-md opacity-80">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-caption text-caption text-on-surface-variant">Private, calm studio environment.</span>
+</div>
+</div>
+<!-- Hero Visual (Bento-style representation) -->
+<div class="relative w-full max-w-lg aspect-square md:aspect-[4/5] bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_10px_20px_-5px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col items-center justify-center p-sm">
+<!-- Placeholder for the realistic illustration -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-90" data-alt="A premium, realistic illustration of a calm, well-lit modern home office. A professional person sits confidently at a clean desk, facing a webcam, engaged in a virtual interview. The aesthetic is clean, minimalist corporate-modern, utilizing a palette of off-whites, navy blues, and subtle teal accents. The lighting is soft and supportive, conveying psychological safety and executive presence. No robotic or overly playful edtech elements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhbgLALMI2Z4wD0EC_N_kg8FBkxyjz-uk9lp-K_qJ5lWT-32svyBoHo2moxkpUI7aGYktbsnvsCzrpllOllnJo12X49FfMxLJNrpDwaW1R6yOjI_m64h11i3oDR3L3QbrTcIribngeVUwK8KxQoGX4Ih766gzhz2LxsaNq1UHcuSHADfBz-XAzznWMiFYYxZ-VSwW4gcb3oVDov7QkvGWPtKLO8KGw2uvEm4EPkG2CxNFS_NUNMUDUjA">
+<!-- Overlay UI Elements to reinforce the 'Studio' feel -->
+<div class="absolute bottom-md left-md right-md bg-surface-container-lowest/95 backdrop-blur-md border border-outline-variant rounded-lg p-sm flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined">mic</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Audio Input Active</span>
+<span class="font-caption text-caption text-secondary">Clear Enunciation detected</span>
+</div>
+</div>
+<div class="w-16 h-8 flex items-center justify-between gap-[2px] opacity-70">
+<!-- Simulated Waveform -->
+<div class="w-1 h-3 bg-secondary rounded-full"></div>
+<div class="w-1 h-6 bg-secondary rounded-full"></div>
+<div class="w-1 h-4 bg-secondary rounded-full"></div>
+<div class="w-1 h-7 bg-secondary rounded-full"></div>
+<div class="w-1 h-2 bg-secondary rounded-full"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container dark:bg-surface-container-lowest border-t border-surface-variant dark:border-outline-variant w-full py-md px-md md:px-lg mt-auto flex flex-col md:flex-row justify-between items-center gap-sm">
+<div class="font-label-md text-label-md font-bold text-primary flex items-center gap-sm">
+            OutLoud
+            <span class="font-body-md text-body-md font-normal text-on-surface-variant ml-sm hidden md:inline">| Studio</span>
+</div>
+<div class="flex items-center gap-md">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all focus:outline-none focus:ring-2 focus:ring-secondary rounded" href="#">
+                Privacy Policy
+            </a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all focus:outline-none focus:ring-2 focus:ring-secondary rounded" href="#">
+                Terms of Service
+            </a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all focus:outline-none focus:ring-2 focus:ring-secondary rounded" href="#">
+                Contact Support
+            </a>
+</div>
+<div class="font-caption text-caption text-on-surface-variant">
+            © 2024 OutLoud Studio. Precision in every word.
+        </div>
+</footer>
+</body></html>

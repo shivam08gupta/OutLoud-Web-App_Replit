@@ -11,30 +11,31 @@ import {
   Router as WouterRouter,
 } from 'wouter';
 
-const queryClient = new QueryClient();
+import Landing from '@/pages/landing';
+import SignIn from '@/pages/signin';
+import Dashboard from '@/pages/dashboard';
+import Onboarding from '@/pages/onboarding';
+import Permissions from '@/pages/permissions';
+import Practice from '@/pages/practice';
+import Complete from '@/pages/complete';
+import Feedback from '@/pages/feedback';
+import Returning from '@/pages/returning';
 
-function Home() {
-  return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-900">
-          Replit Agent is building...
-        </h1>
-        <p className="mt-2 text-sm text-gray-600">
-          Your app will appear here once it's ready.
-        </p>
-      </div>
-    </div>
-  );
-}
+const queryClient = new QueryClient();
 
 function Router() {
   return (
-    // Keep a shared shell (sidebar, navbar) outside the boundary so it
-    // survives a page crash.
     <RoutedErrorBoundary>
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={Landing} />
+        <Route path="/signin" component={SignIn} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/onboarding" component={Onboarding} />
+        <Route path="/permissions" component={Permissions} />
+        <Route path="/practice" component={Practice} />
+        <Route path="/complete" component={Complete} />
+        <Route path="/feedback" component={Feedback} />
+        <Route path="/returning" component={Returning} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
