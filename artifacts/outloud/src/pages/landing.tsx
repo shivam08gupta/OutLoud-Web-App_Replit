@@ -40,7 +40,7 @@ export default function Landing() {
       </nav>
 
       {/* Main Content Canvas */}
-      <main className="flex-grow w-full max-w-container-max mx-auto px-md md:px-lg py-xl flex flex-col md:flex-row items-center justify-between gap-xl">
+      <main className="flex-grow w-full max-w-container-max mx-auto px-md md:px-lg py-lg md:py-xl flex flex-col md:flex-row items-center justify-center md:justify-between gap-lg md:gap-xl">
         {/* Hero Text */}
         <div className="flex flex-col gap-md max-w-2xl">
           <h1 className="font-display-lg text-display-lg md:text-[64px] md:leading-[1.1] text-primary tracking-tight">
@@ -71,8 +71,8 @@ export default function Landing() {
         {/* Hero Visual */}
         <div className="relative w-full max-w-[32rem] aspect-square md:aspect-[4/5] bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_10px_20px_-5px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col items-center justify-center p-sm">
           <img 
-            src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=800" 
-            alt="Person in video interview"
+            src="https://plus.unsplash.com/premium_photo-1661682840296-e33fb77416c7?auto=format&fit=crop&q=80&w=800" 
+            alt="Candidate practising for a job interview on a laptop video call"
             className="absolute inset-0 w-full h-full object-cover opacity-90"
           />
           <div className="absolute bottom-md left-md right-md bg-surface-container-lowest/95 backdrop-blur-md border border-outline-variant rounded-lg p-sm flex items-center justify-between shadow-sm">

@@ -1,0 +1,160 @@
+We have completed the first UI build and manually QA-tested the deployed OutLoud MVP.
+
+Make ONLY the following targeted UI/flow corrections. Do not start Build 2 and do not implement authentication, database, speech-to-text, recording, camera permissions, LLM/API integration, Mixpanel, or backend functionality yet.
+
+IMPORTANT:
+Keep the existing Stitch-inspired visual language and existing working routes. Do not redesign the application from scratch.
+
+1. LANDING PAGE
+
+Replace the current hero image.
+
+The current image shows people in a server/data-center environment, which is not appropriate for OutLoud.
+
+Use a visually relevant professional job-interview/practice scenario instead:
+- A candidate preparing for or participating in a realistic virtual job interview.
+- Professional but approachable.
+- Calm, modern workspace.
+- Laptop/webcam/interview context is appropriate.
+- The image should reinforce "practising for interviews" rather than technology/data centers.
+- Do not make the image overly corporate or intimidating.
+
+Also fix the excessive blank/white space around the landing-page content.
+
+Use the available viewport more effectively:
+- Keep the hero content centered vertically.
+- Maintain comfortable whitespace.
+- Reduce unnecessary empty margins around the hero section.
+- Keep the two-column desktop composition.
+- Preserve responsive behaviour on smaller screens.
+
+Do not change the existing headline or primary product positioning unless necessary for layout.
+
+2. DASHBOARD: SETTINGS AND HELP
+
+Currently, clicking Settings or Help incorrectly redirects to the landing page.
+
+Fix this behaviour.
+
+For V1, do NOT build full Settings or Help functionality.
+
+Instead:
+- Clicking Settings should show a simple intentional "Settings coming soon" state/modal or placeholder.
+- Clicking Help should show a simple intentional "Help & Support coming soon" state/modal or placeholder.
+- They must NOT redirect to the landing page.
+- Keep the existing dashboard visually intact.
+
+3. PERMISSIONS SCREEN
+
+The privacy message is currently too visually subtle.
+
+Make the privacy notice more prominent while keeping the calm OutLoud visual language.
+
+Current message:
+"Privacy first. We don't analyse your appearance, eye contact, body language, or emotions."
+
+Keep the meaning and wording.
+
+Improve:
+- visual hierarchy
+- contrast
+- readability
+- icon visibility
+- spacing
+
+It should be immediately noticeable before the user grants camera/microphone access.
+
+Do NOT change the product boundary:
+OutLoud V1 does NOT analyse appearance, eye contact, body language, or emotions.
+
+4. INTERVIEW PRACTICE FLOW
+
+Clarify the intended 3-question session flow.
+
+A practice session contains exactly 3 interview questions.
+
+The intended flow is:
+
+Question 1 of 3
+→ Start Recording
+→ Stop Recording
+→ Feedback
+→ Try Again OR Next Question
+
+Then:
+
+Question 2 of 3
+→ Start Recording
+→ Stop Recording
+→ Feedback
+→ Try Again OR Next Question
+
+Then:
+
+Question 3 of 3
+→ Start Recording
+→ Stop Recording
+→ Feedback
+→ Complete Session
+
+Keep the current "Question 1 of 3" pattern.
+
+For this build, recording and AI feedback remain STATIC placeholders.
+
+Do NOT implement actual recording or AI yet.
+
+The navigation/state should simply demonstrate the intended flow:
+- Start Recording can simulate recording.
+- Stop Recording can move to the feedback screen.
+- Try Again returns to the same question/practice state.
+- Next Question advances to the next question.
+- After Question 3 feedback, continue to Session Complete.
+
+This is important because the final product will later use:
+Recording → Speech-to-text → LLM → structured JSON → feedback UI.
+
+5. AI FEEDBACK SCREEN
+
+Fix the visual contrast problem in the "Try saying it this way" section.
+
+Currently, the suggested-answer area has very low contrast and the text becomes difficult to read.
+
+Redesign this specific area so that:
+- The suggested response is clearly readable.
+- Use dark navy text on a light teal/aqua background OR another high-contrast combination consistent with the OutLoud design system.
+- Do NOT use muted amber/yellow as the primary background.
+- Keep the existing dark navy "Try saying it this way" section.
+- Keep the "You said", "Try", and "Why" hierarchy.
+- Make sure the "Try" answer is clearly distinguishable from the user's original answer.
+- Preserve accessibility and readable contrast.
+
+Keep:
+- What went well
+- Focus on
+- Try saying it this way
+- Try Again
+- Next Question
+- Help us improve OutLoud
+
+6. DO NOT CHANGE
+
+Do not modify:
+- The current overall OutLoud colour palette.
+- The approved onboarding design.
+- V1/V2 boundaries.
+- The current navigation architecture except where explicitly requested above.
+- The responsive mobile design.
+- The existing Stitch reference HTML files.
+- Any AI/backend architecture because that belongs to the next build.
+
+7. STOP CONDITION
+
+After making these corrections:
+- Verify that the application builds successfully.
+- Verify the main navigation still works.
+- Verify the 3-question practice flow can be demonstrated with placeholder interactions.
+- Verify Settings and Help no longer redirect to Landing.
+- Verify the AI Feedback suggested-answer area has readable contrast.
+- Verify the landing page has the new interview-relevant visual and improved spacing.
+
+Do not implement any additional features beyond these corrections.

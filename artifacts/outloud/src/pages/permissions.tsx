@@ -36,11 +36,13 @@ export default function Permissions() {
           </p>
 
           {/* Privacy Reassurance Box */}
-          <div className="w-full bg-surface-container-low rounded-lg p-sm mb-lg flex items-start gap-sm text-left border border-surface-variant">
-            <ShieldCheck className="w-5 h-5 text-secondary shrink-0 mt-0.5 fill-current text-surface-container-lowest" strokeWidth={1.5} />
+          <div className="w-full bg-secondary-container rounded-lg p-md mb-lg flex items-start gap-sm text-left border border-secondary shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)]">
+            <div className="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-5 h-5 text-on-secondary-container" strokeWidth={2} />
+            </div>
             <div>
-              <p className="font-caption text-caption text-on-surface-variant leading-relaxed">
-                <strong className="font-medium text-on-surface">Privacy first.</strong> We don't analyse your appearance, eye contact, body language, or emotions.
+              <p className="font-body-md text-body-md text-on-secondary-container leading-relaxed">
+                <strong className="font-bold">Privacy first.</strong> We don't analyse your appearance, eye contact, body language, or emotions.
               </p>
             </div>
           </div>

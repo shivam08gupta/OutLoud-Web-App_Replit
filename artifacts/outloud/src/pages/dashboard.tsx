@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   LayoutDashboard,
@@ -18,9 +19,18 @@ import {
   BarChart,
   RecordVoiceOver,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   return (
     <div className="bg-background text-on-background flex flex-col md:flex-row min-h-screen">
@@ -57,10 +67,13 @@ export default function Dashboard() {
             <History className="w-5 h-5" />
             <span className="font-label-md text-label-md">History</span>
           </Link>
-          <Link href="/" className="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg hover:text-primary transition-colors duration-200">
+          <button
+            onClick={() => setSettingsOpen(true)}
+            className="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg hover:text-primary transition-colors duration-200 text-left"
+          >
             <Settings className="w-5 h-5" />
             <span className="font-label-md text-label-md">Settings</span>
-          </Link>
+          </button>
         </nav>
 
         <div className="mt-auto flex flex-col gap-4">
@@ -72,10 +85,13 @@ export default function Dashboard() {
           </button>
           
           <div className="flex flex-col gap-2 pt-4 border-t border-surface-variant">
-            <Link href="/" className="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg hover:text-primary transition-colors duration-200">
+            <button
+              onClick={() => setHelpOpen(true)}
+              className="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg hover:text-primary transition-colors duration-200 text-left"
+            >
               <HelpCircle className="w-5 h-5" />
               <span className="font-label-md text-label-md">Help</span>
-            </Link>
+            </button>
             <Link href="/signin" className="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg hover:text-primary transition-colors duration-200">
               <LogOut className="w-5 h-5" />
               <span className="font-label-md text-label-md">Sign Out</span>
@@ -335,6 +351,36 @@ export default function Dashboard() {
           <span className="font-label-md text-[10px]">Profile</span>
         </Link>
       </nav>
+
+      {/* Settings coming soon */}
+      <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <DialogContent className="bg-surface-container-lowest border-outline-variant">
+          <DialogHeader>
+            <div className="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-sm">
+              <Settings className="w-6 h-6 text-primary" />
+            </div>
+            <DialogTitle className="font-headline-md text-headline-md text-primary">Settings coming soon</DialogTitle>
+            <DialogDescription className="font-body-md text-body-md text-on-surface-variant">
+              We're still building account and notification settings. Check back in a future update.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
+      {/* Help coming soon */}
+      <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
+        <DialogContent className="bg-surface-container-lowest border-outline-variant">
+          <DialogHeader>
+            <div className="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-sm">
+              <HelpCircle className="w-6 h-6 text-primary" />
+            </div>
+            <DialogTitle className="font-headline-md text-headline-md text-primary">Help & Support coming soon</DialogTitle>
+            <DialogDescription className="font-body-md text-body-md text-on-surface-variant">
+              A dedicated help center is on the way. In the meantime, reach out via the footer contact link.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

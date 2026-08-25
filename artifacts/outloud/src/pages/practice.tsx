@@ -1,9 +1,31 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useSearch } from "wouter";
 import { X, Video, Mic, StopCircle, HelpCircle, Loader2, Disc } from "lucide-react";
+
+const QUESTIONS = [
+  {
+    prompt: "Tell me about a time when you disagreed with a stakeholder.",
+    guidance: "Take a moment to think. There's no need to rush. Focus on outlining the situation, your specific action, and the constructive outcome.",
+  },
+  {
+    prompt: "Describe a project where you had to learn something new under a tight deadline.",
+    guidance: "Walk through how you prioritised learning, the resources you used, and how it affected the outcome.",
+  },
+  {
+    prompt: "Tell me about a time you received difficult feedback. How did you respond?",
+    guidance: "Focus on what you changed afterwards, not just how the feedback felt.",
+  },
+];
+const TOTAL_QUESTIONS = QUESTIONS.length;
 
 export default function Practice() {
   const [, setLocation] = useLocation();
+  const search = useSearch();
+  const currentQuestion = Math.min(
+    Math.max(parseInt(new URLSearchParams(search).get("q") ?? "1", 10) || 1, 1),
+    TOTAL_QUESTIONS,
+  );
+  const question = QUESTIONS[currentQuestion - 1];
   const [isRecording, setIsRecording] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [seconds, setSeconds] = useState(0);
@@ -33,7 +55,7 @@ export default function Practice() {
     setIsSubmitting(true);
     // Simulate submission
     setTimeout(() => {
-      setLocation("/complete");
+      setLocation(`/feedback?q=${currentQuestion}`);
     }, 1500);
   };
 
@@ -68,7 +90,7 @@ export default function Practice() {
         </button>
         <div className="text-center">
           <h1 className="font-label-md text-label-md text-primary font-bold">Behavioural Interview</h1>
-          <p className="font-caption text-caption text-on-surface-variant mt-1">Question 1 of 3</p>
+          <p className="font-caption text-caption text-on-surface-variant mt-1">Question {currentQuestion} of {TOTAL_QUESTIONS}</p>
         </div>
         <div className="w-10 h-10"></div>
       </header>
@@ -129,7 +151,7 @@ export default function Practice() {
                 <span className="font-label-md text-label-md uppercase tracking-wider text-secondary">Behavioural Interview</span>
               </div>
               <div className="bg-surface-container py-1 px-3 rounded-full border border-outline-variant/50">
-                <span className="font-label-md text-label-md text-on-surface">Question 1 of 3</span>
+                <span className="font-label-md text-label-md text-on-surface">Question {currentQuestion} of {TOTAL_QUESTIONS}</span>
               </div>
             </div>
 
@@ -139,10 +161,10 @@ export default function Practice() {
 
             <div className="mb-lg flex-grow md:flex-grow-0">
               <h2 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary md:text-on-surface mb-sm text-balance">
-                "Tell me about a time when you disagreed with a stakeholder."
+                "{question.prompt}"
               </h2>
               <p className="font-body-md md:font-body-lg text-body-md md:text-body-lg text-on-surface-variant text-balance">
-                Take a moment to think. There's no need to rush. Focus on outlining the situation, your specific action, and the constructive outcome.
+                {question.guidance}
               </p>
             </div>
           </div>

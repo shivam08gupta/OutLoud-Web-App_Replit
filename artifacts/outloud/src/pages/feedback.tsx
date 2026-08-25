@@ -1,4 +1,5 @@
-import { Link, useLocation } from "wouter";
+import { useState } from "react";
+import { Link, useLocation, useSearch } from "wouter";
 import { 
   LayoutDashboard, 
   Mic, 
@@ -17,9 +18,36 @@ import {
   Quote,
   MessageSquare
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+
+const TOTAL_QUESTIONS = 3;
 
 export default function Feedback() {
   const [, setLocation] = useLocation();
+  const search = useSearch();
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+
+  const currentQuestion = Math.min(
+    Math.max(parseInt(new URLSearchParams(search).get("q") ?? "1", 10) || 1, 1),
+    TOTAL_QUESTIONS,
+  );
+  const isLastQuestion = currentQuestion >= TOTAL_QUESTIONS;
+
+  const handleTryAgain = () => setLocation(`/practice?q=${currentQuestion}`);
+  const handleNext = () => {
+    if (isLastQuestion) {
+      setLocation("/complete");
+    } else {
+      setLocation(`/practice?q=${currentQuestion + 1}`);
+    }
+  };
 
   return (
     <div className="bg-background text-on-background min-h-screen flex flex-col md:flex-row antialiased">
@@ -47,15 +75,21 @@ export default function Feedback() {
           <Link href="/dashboard" className="text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg flex items-center gap-3 transition-colors duration-200 font-label-md text-label-md">
             <History className="w-5 h-5" /> History
           </Link>
-          <Link href="/" className="text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg flex items-center gap-3 transition-colors duration-200 font-label-md text-label-md">
+          <button
+            onClick={() => setSettingsOpen(true)}
+            className="text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg flex items-center gap-3 transition-colors duration-200 font-label-md text-label-md text-left"
+          >
             <Settings className="w-5 h-5" /> Settings
-          </Link>
+          </button>
         </div>
 
         <div className="flex flex-col gap-2 mt-auto pt-md border-t border-surface-variant">
-          <Link href="/" className="text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg flex items-center gap-3 transition-colors duration-200 font-label-md text-label-md">
+          <button
+            onClick={() => setHelpOpen(true)}
+            className="text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg flex items-center gap-3 transition-colors duration-200 font-label-md text-label-md text-left"
+          >
             <HelpCircle className="w-5 h-5" /> Help
-          </Link>
+          </button>
           <Link href="/signin" className="text-on-surface-variant px-4 py-2 hover:bg-surface-variant rounded-lg flex items-center gap-3 transition-colors duration-200 font-label-md text-label-md">
             <LogOut className="w-5 h-5" /> Sign Out
           </Link>
@@ -90,7 +124,7 @@ export default function Feedback() {
             <div className="flex items-center gap-2 mb-sm text-on-surface-variant font-label-md text-label-md">
               <Link href="/practice" className="hover:text-primary transition-colors">Practice</Link>
               <ChevronRight className="w-4 h-4" />
-              <span>Behavioural Interview · Question 1</span>
+              <span>Behavioural Interview · Question {currentQuestion} of {TOTAL_QUESTIONS}</span>
             </div>
             <h2 className="font-display-lg text-display-lg text-primary tracking-tight">Your feedback</h2>
             <p className="font-body-lg text-body-lg text-on-surface-variant mt-sm max-w-2xl">Here's what went well and what you can improve in your next attempt.</p>
@@ -177,9 +211,9 @@ export default function Feedback() {
                   <span className="text-label-md font-bold text-on-primary opacity-70">You said:</span>
                   <p className="font-body-md text-primary-fixed-dim">"I tried to explain him why my way was better."</p>
                 </div>
-                <div className="flex flex-col gap-1 p-md bg-secondary-container bg-opacity-10 rounded-lg border border-secondary-container border-opacity-30">
-                  <span className="text-label-md font-bold text-secondary-fixed">Try:</span>
-                  <p className="font-body-lg font-medium text-secondary-fixed">"I tried to explain to him why my way was better."</p>
+                <div className="flex flex-col gap-1 p-md bg-secondary-container rounded-lg border border-secondary-container">
+                  <span className="text-label-md font-bold text-primary">Try:</span>
+                  <p className="font-body-lg font-medium text-primary">"I tried to explain to him why my way was better."</p>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-label-md font-bold text-on-primary opacity-70">Why:</span>
@@ -194,16 +228,16 @@ export default function Feedback() {
           {/* Action Area */}
           <div className="flex flex-col sm:flex-row items-center gap-sm mt-lg pt-lg border-t border-surface-variant">
             <button 
-              onClick={() => setLocation("/practice")}
-              className="w-full sm:w-auto bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity"
+              onClick={handleTryAgain}
+              className="w-full sm:w-auto bg-surface-container-lowest border border-surface-variant text-primary px-lg py-sm rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors"
             >
               Try Again
             </button>
             <button 
-              onClick={() => setLocation("/dashboard")}
-              className="w-full sm:w-auto bg-surface-container-lowest border border-surface-variant text-primary px-lg py-sm rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors"
+              onClick={handleNext}
+              className="w-full sm:w-auto bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity"
             >
-              Next Question
+              {isLastQuestion ? "Complete Session" : "Next Question"}
             </button>
           </div>
           
@@ -229,6 +263,36 @@ export default function Feedback() {
           </div>
         </footer>
       </main>
+
+      {/* Settings coming soon */}
+      <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <DialogContent className="bg-surface-container-lowest border-outline-variant">
+          <DialogHeader>
+            <div className="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-sm">
+              <Settings className="w-6 h-6 text-primary" />
+            </div>
+            <DialogTitle className="font-headline-md text-headline-md text-primary">Settings coming soon</DialogTitle>
+            <DialogDescription className="font-body-md text-body-md text-on-surface-variant">
+              We're still building account and notification settings. Check back in a future update.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
+      {/* Help coming soon */}
+      <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
+        <DialogContent className="bg-surface-container-lowest border-outline-variant">
+          <DialogHeader>
+            <div className="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-sm">
+              <HelpCircle className="w-6 h-6 text-primary" />
+            </div>
+            <DialogTitle className="font-headline-md text-headline-md text-primary">Help & Support coming soon</DialogTitle>
+            <DialogDescription className="font-body-md text-body-md text-on-surface-variant">
+              A dedicated help center is on the way. In the meantime, reach out via the footer contact link.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
