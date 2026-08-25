@@ -1,11 +1,48 @@
+import { useState } from "react";
 import { useLocation } from "wouter";
-import { Video, Mic, ShieldCheck } from "lucide-react";
+import { Video, Mic, ShieldCheck, AlertCircle, Loader2 } from "lucide-react";
+
+type Mode = "av" | "audio";
 
 export default function Permissions() {
   const [, setLocation] = useLocation();
+  const [requesting, setRequesting] = useState<Mode | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [deniedMode, setDeniedMode] = useState<Mode | null>(null);
 
-  const proceed = () => {
-    setLocation("/practice");
+  const requestAccess = async (mode: Mode) => {
+    setError(null);
+    setRequesting(mode);
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setRequesting(null);
+      setError("This browser doesn't support camera or microphone access. Please try a modern browser like Chrome.");
+      return;
+    }
+
+    try {
+      const constraints: MediaStreamConstraints =
+        mode === "av" ? { video: true, audio: true } : { audio: true };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      // Only confirming access here; the practice screen opens its own stream.
+      stream.getTracks().forEach((track) => track.stop());
+      setLocation(`/practice?q=1&media=${mode}`);
+    } catch (err) {
+      setRequesting(null);
+      setDeniedMode(mode);
+      const name = (err as { name?: string })?.name;
+      if (name === "NotAllowedError" || name === "PermissionDeniedError") {
+        setError(
+          mode === "av"
+            ? "Camera and microphone access was denied. You can try again or continue with microphone only."
+            : "Microphone access was denied. Please allow microphone access in your browser to continue.",
+        );
+      } else if (name === "NotFoundError" || name === "DevicesNotFoundError") {
+        setError("We couldn't find a camera or microphone on this device.");
+      } else {
+        setError("We couldn't access your camera or microphone. Please try again.");
+      }
+    }
   };
 
   return (
@@ -47,18 +84,30 @@ export default function Permissions() {
             </div>
           </div>
 
+          {/* Error / retry state */}
+          {error && (
+            <div className="w-full bg-error-container text-on-error-container rounded-lg p-sm mb-md flex items-start gap-sm text-left border border-error/30">
+              <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+              <p className="font-body-md text-body-md leading-relaxed">{error}</p>
+            </div>
+          )}
+
           {/* Action Area */}
           <div className="w-full flex flex-col gap-sm">
             <button 
-              onClick={proceed}
-              className="w-full bg-primary text-on-primary font-label-md text-label-md py-sm px-sm rounded-lg hover:bg-on-primary-fixed transition-colors duration-200 flex items-center justify-center gap-xs focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface-container-lowest"
+              onClick={() => requestAccess("av")}
+              disabled={requesting !== null}
+              className="w-full bg-primary text-on-primary font-label-md text-label-md py-sm px-sm rounded-lg hover:bg-on-primary-fixed transition-colors duration-200 flex items-center justify-center gap-xs focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface-container-lowest disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Allow Camera & Microphone
+              {requesting === "av" && <Loader2 className="w-4 h-4 animate-spin" />}
+              {deniedMode === "av" && error ? "Try Again: Allow Camera & Microphone" : "Allow Camera & Microphone"}
             </button>
             <button 
-              onClick={proceed}
-              className="w-full bg-surface-container-lowest text-primary border border-outline-variant font-label-md text-label-md py-sm px-sm rounded-lg hover:bg-surface-container-low transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface-container-lowest"
+              onClick={() => requestAccess("audio")}
+              disabled={requesting !== null}
+              className="w-full bg-surface-container-lowest text-primary border border-outline-variant font-label-md text-label-md py-sm px-sm rounded-lg hover:bg-surface-container-low transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface-container-lowest disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-xs"
             >
+              {requesting === "audio" && <Loader2 className="w-4 h-4 animate-spin" />}
               Use Microphone Only
             </button>
           </div>

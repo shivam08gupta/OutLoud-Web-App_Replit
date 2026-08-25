@@ -1,0 +1,282 @@
+BUILD 2: Make the OutLoud speaking practice experience functional.
+
+We have already completed and QA-tested the frontend UI foundation.
+
+IMPORTANT CREDIT CONSTRAINT:
+I have approximately $8 of Replit credits remaining.
+
+Be extremely conservative with changes.
+Do not rebuild the application.
+Do not redesign existing screens.
+Do not install unnecessary packages.
+Do not add a backend.
+Do not add an external paid API.
+Do not implement an LLM yet.
+Do not implement authentication, database, Mixpanel, or user accounts yet.
+
+This build is ONLY for:
+1. Real camera access
+2. Real microphone access
+3. Real browser-based speech-to-text
+4. Recording state and controls
+5. Connecting the practice → transcript → feedback placeholder → next question flow
+
+TECHNICAL APPROACH
+
+Use browser-native Web APIs wherever possible.
+
+Camera + microphone:
+- Use navigator.mediaDevices.getUserMedia()
+- Request camera and microphone only after the user explicitly clicks the permission CTA.
+- Display the user's live local camera stream in the existing "You" / "Camera Preview" area.
+- Do not upload the video anywhere.
+- Do not analyse appearance, eye contact, body language, facial expression, or emotions.
+- Stop all media tracks when leaving the practice screen/session.
+
+Audio recording:
+- Use the browser MediaRecorder API.
+- Record the user's microphone audio while the practice response is active.
+- The recording does not need to be uploaded or stored remotely in Build 2.
+- Keep the implementation local to the browser.
+- Show clear recording state:
+  Idle → Recording → Processing → Ready
+
+Speech-to-text:
+- Use the browser's Web Speech API / SpeechRecognition where supported.
+- Do NOT use OpenAI Whisper, Google Cloud Speech-to-Text, Deepgram, AssemblyAI, or any paid external STT service.
+- Do NOT add an API key.
+- Do NOT ask me for a credit card.
+- The transcript should appear after/during the user's response.
+- Preserve the transcript in React state for the current question.
+
+BROWSER COMPATIBILITY:
+The MVP will primarily be demonstrated in a modern Chromium browser such as Google Chrome.
+
+If SpeechRecognition is not available:
+- Do not fake a transcript.
+- Show a clear, friendly message explaining that speech-to-text is unavailable in the current browser.
+- Provide an option to retry or use a supported browser.
+- Do not crash the application.
+
+PRACTICE FLOW
+
+A V1 practice session contains exactly 3 interview questions.
+
+Question 1:
+→ User sees question
+→ User clicks Start Recording
+→ Camera + microphone are active
+→ Recording begins
+→ Speech-to-text captures the response
+→ User clicks Stop Recording
+→ Recording stops
+→ Transcript is available
+→ Show a processing state briefly
+→ Navigate to the existing AI Feedback screen
+
+For Build 2, the AI Feedback screen must continue using STATIC placeholder feedback.
+Do NOT connect an LLM yet.
+
+Feedback screen:
+- Show the transcript from the user's actual response.
+- Keep the existing feedback UI.
+- Clearly label the response as the user's transcript.
+- Keep the existing "Try Again" and "Next Question" actions.
+
+Try Again:
+→ Return to the SAME question
+→ Allow the user to record another response
+→ Replace the previous response for that attempt
+
+Next Question:
+→ Advance to Question 2
+→ Update the indicator to "Question 2 of 3"
+
+Then repeat the same flow for Question 2.
+
+Question 3:
+→ Record
+→ Stop
+→ Transcript
+→ Static feedback
+→ After feedback, "Next Question" should become "Complete Session" or equivalent.
+→ Navigate to Session Complete.
+
+SESSION STATE
+
+Maintain the current practice session in client-side state.
+
+Track at minimum:
+- Current question index
+- Current question text
+- Recording state
+- Transcript for current response
+- Whether the current response has been completed
+- Number of completed questions
+- Whether the user retried a question
+
+Do not create a backend or database.
+
+You may use localStorage only if needed to prevent accidental loss during the current demo, but do not build a full persistence system.
+
+CAMERA/MIC PERMISSIONS SCREEN
+
+Keep the existing approved permissions screen.
+
+The existing wording is intentional:
+
+"Let's make this feel like a real scenario"
+
+And:
+
+"Privacy first. We don't analyse your appearance, eye contact, body language, or emotions."
+
+Do not change the product boundary.
+
+When the user clicks:
+"Allow Camera & Microphone"
+
+→ Request actual browser camera + microphone permissions.
+
+When the user clicks:
+"Use Microphone Only"
+
+→ Request microphone permission only.
+→ The practice screen should work without camera.
+→ Show an appropriate "Camera unavailable / microphone only" state.
+
+If the user denies permission:
+- Do not crash.
+- Explain what permission is missing.
+- Provide a retry option.
+- Allow microphone-only fallback where technically possible.
+
+PRACTICE SCREEN LAYOUT
+
+Keep the approved Stitch layout.
+
+Desktop:
+- Question/content area approximately 50-60%
+- Camera approximately 30-40%
+- Remaining space for controls/status
+
+The camera should be the user's actual live camera stream, not the previous static Stitch image.
+
+Label the camera area:
+"You"
+
+or
+
+"Camera Preview"
+
+Use the existing approved visual design.
+
+Mobile:
+Follow the existing Stitch mobile reference.
+Do not create a separate mobile route.
+Use responsive CSS.
+
+RECORDING UX
+
+When idle:
+"Start Recording"
+
+During recording:
+- Show clear recording state
+- Show elapsed time
+- Show "Stop Recording"
+- Show a subtle recording indicator
+
+During processing:
+"Processing your response..."
+
+After processing:
+Move to feedback.
+
+Do not add unnecessary animations.
+
+TRANSCRIPT UX
+
+The user should be able to see their captured response after recording.
+
+Example:
+
+Your response
+
+"I believe the biggest challenge was..."
+
+Do not artificially improve, correct, rewrite, or score the transcript in Build 2.
+
+The transcript must represent the browser speech recognition output as captured.
+
+AI feedback will be implemented in Build 3.
+
+ERROR HANDLING
+
+Handle these cases gracefully:
+
+1. Camera permission denied
+2. Microphone permission denied
+3. Speech recognition unavailable
+4. Speech recognition stops unexpectedly
+5. Empty transcript
+6. MediaRecorder unsupported
+7. User exits practice before completing
+8. User starts/stops recording multiple times
+
+Never leave the application in a broken state.
+
+For an empty transcript:
+Show:
+"We couldn't capture your response. Please try again."
+
+Do not generate a fake response.
+
+IMPORTANT PRODUCT BOUNDARIES
+
+Build 2 must NOT:
+- Analyse facial expressions
+- Analyse eye contact
+- Analyse body language
+- Analyse emotions
+- Score the user's appearance
+- Upload video
+- Store recordings remotely
+- Call an LLM
+- Call a paid STT API
+- Add authentication
+- Add a database
+- Add Mixpanel
+
+The purpose of Build 2 is simply to make the speaking interaction real.
+
+SUCCESS CRITERIA
+
+After this build I should be able to:
+
+1. Open the deployed OutLoud app.
+2. Go through Onboarding.
+3. Reach Permissions.
+4. Grant camera + microphone access.
+5. See my actual camera feed.
+6. Start recording.
+7. Speak an answer.
+8. Stop recording.
+9. See the actual speech-to-text transcript.
+10. Open the existing feedback screen with my transcript visible.
+11. Try the same question again.
+12. Move to Question 2.
+13. Complete Questions 1, 2 and 3.
+14. Reach Session Complete.
+
+Do not implement anything beyond this scope.
+
+Before finishing:
+- Verify the app builds successfully.
+- Verify there are no console/runtime errors caused by your changes.
+- Verify camera and microphone streams are cleaned up when leaving practice.
+- Verify the 3-question flow works.
+- Verify unsupported-browser and permission-denied states are handled.
+
+Then STOP.
+Do not suggest or implement Build 3.

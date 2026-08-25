@@ -17,7 +17,6 @@ import {
   ChevronRight,
   User,
   BarChart,
-  RecordVoiceOver,
 } from "lucide-react";
 import {
   Dialog,

@@ -40,6 +40,9 @@ export default function Feedback() {
   );
   const isLastQuestion = currentQuestion >= TOTAL_QUESTIONS;
 
+  const sttUnsupported = sessionStorage.getItem(`outloud_transcript_unsupported_${currentQuestion}`) === "1";
+  const transcript = sessionStorage.getItem(`outloud_transcript_${currentQuestion}`) ?? "";
+
   const handleTryAgain = () => setLocation(`/practice?q=${currentQuestion}`);
   const handleNext = () => {
     if (isLastQuestion) {
@@ -128,6 +131,22 @@ export default function Feedback() {
             </div>
             <h2 className="font-display-lg text-display-lg text-primary tracking-tight">Your feedback</h2>
             <p className="font-body-lg text-body-lg text-on-surface-variant mt-sm max-w-2xl">Here's what went well and what you can improve in your next attempt.</p>
+          </div>
+
+          {/* Your transcript */}
+          <div className="mb-xl max-w-3xl bg-surface-container-lowest rounded-xl border border-surface-variant p-md">
+            <span className="font-label-md text-label-md uppercase tracking-wider text-secondary block mb-xs">Your transcript</span>
+            {sttUnsupported ? (
+              <p className="font-body-md text-body-md text-on-surface-variant italic">
+                Speech-to-text isn't available in this browser, so no transcript could be captured. Your response was still recorded. Try Chrome for a full transcript.
+              </p>
+            ) : transcript ? (
+              <p className="font-body-lg text-body-lg text-on-surface">"{transcript}"</p>
+            ) : (
+              <p className="font-body-md text-body-md text-on-surface-variant italic">
+                No transcript available for this question yet.
+              </p>
+            )}
           </div>
 
           {/* Bento Grid Layout */}

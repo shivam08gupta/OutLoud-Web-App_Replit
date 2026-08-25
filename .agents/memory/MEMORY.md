@@ -1,0 +1,1 @@
+- [Tailwind v4 spacing/max-w token collision](tailwind-v4-spacing-maxw-collision.md) — custom `--spacing-sm/md/lg/xl` theme tokens silently override Tailwind's built-in `max-w-{sm,md,lg,xl}` scale.
