@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "OutLoud"
+description = "A new web application named OutLoud. Currently just an initialized project scaffold with no features yet."
+version = "1.0.0"
+id = "artifacts/outloud"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23742
+
+[services.development]
+run = "pnpm --filter @workspace/outloud run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/outloud", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/outloud/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23742"
+BASE_PATH = "/"
