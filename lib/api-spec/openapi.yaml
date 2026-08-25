@@ -12,6 +12,10 @@ tags:
     description: Health operations
   - name: feedback
     description: AI feedback operations
+  - name: profile
+    description: Authenticated user profile operations
+  - name: sessions
+    description: Practice session history operations
 paths:
   /healthz:
     get:
@@ -53,6 +57,101 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         "503":
           description: AI feedback is not available
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /me:
+    get:
+      operationId: getMe
+      tags: [profile]
+      summary: Get the current authenticated user's profile
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateMe
+      tags: [profile]
+      summary: Set the current authenticated user's preferred name
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+      responses:
+        "200":
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /sessions:
+    get:
+      operationId: listSessions
+      tags: [sessions]
+      summary: List the current authenticated user's completed practice sessions
+      description: Ordered most-recent first.
+      responses:
+        "200":
+          description: Sessions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionListResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: createSession
+      tags: [sessions]
+      summary: Record a completed practice session for the current authenticated user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSessionRequest"
+      responses:
+        "200":
+          description: Session recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PracticeSession"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
           content:
             application/json:
               schema:
@@ -138,4 +237,69 @@ components:
       properties:
         error:
           type: string
+    UserProfile:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          nullable: true
+    UpdateProfileRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+    PracticeSessionAnswer:
+      type: object
+      required:
+        - question
+        - transcript
+        - feedback
+      properties:
+        question:
+          type: string
+        transcript:
+          type: string
+        feedback:
+          $ref: "#/components/schemas/FeedbackResponse"
+    PracticeSession:
+      type: object
+      required:
+        - id
+        - answers
+        - completedAt
+      properties:
+        id:
+          type: number
+        answers:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/PracticeSessionAnswer"
+        completedAt:
+          type: string
+          format: date-time
+    CreateSessionRequest:
+      type: object
+      required:
+        - answers
+      properties:
+        answers:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/PracticeSessionAnswer"
+    SessionListResponse:
+      type: object
+      required:
+        - sessions
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: "#/components/schemas/PracticeSession"
 

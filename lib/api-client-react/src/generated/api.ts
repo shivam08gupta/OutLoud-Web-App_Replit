@@ -20,10 +20,15 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  CreateSessionRequest,
   ErrorResponse,
   FeedbackRequest,
   FeedbackResponse,
-  HealthStatus
+  HealthStatus,
+  PracticeSession,
+  SessionListResponse,
+  UpdateProfileRequest,
+  UserProfile
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -201,5 +206,302 @@ export const useGenerateFeedback = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getGenerateFeedbackMutationOptions(options));
+    }
+
+export const getGetMeUrl = () => {
+
+
+
+
+  return `/api/me`
+}
+
+/**
+ * @summary Get the current authenticated user's profile
+ */
+export const getMe = async ( options?: Parameters<typeof customFetch>[1]): Promise<UserProfile> => {
+
+  return customFetch<UserProfile>(getGetMeUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMeQueryKey = () => {
+    return [
+    `/api/me`
+    ] as const;
+    }
+
+
+export const getGetMeQueryOptions = <TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMeQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMe>>> = ({ signal }) => getMe({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMeQueryResult = NonNullable<Awaited<ReturnType<typeof getMe>>>
+export type GetMeQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Get the current authenticated user's profile
+ */
+
+export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMe>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateMeUrl = () => {
+
+
+
+
+  return `/api/me`
+}
+
+/**
+ * @summary Set the current authenticated user's preferred name
+ */
+export const updateMe = async (updateProfileRequest: UpdateProfileRequest, options?: Parameters<typeof customFetch>[1]): Promise<UserProfile> => {
+
+  return customFetch<UserProfile>(getUpdateMeUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(updateProfileRequest)
+  }
+);}
+
+
+
+
+
+export const getUpdateMeMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMe>>, TError,{data: BodyType<UpdateProfileRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateMe>>, TError,{data: BodyType<UpdateProfileRequest>}, TContext> => {
+
+const mutationKey = ['updateMe'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMe>>, {data: BodyType<UpdateProfileRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateMe(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateMeMutationResult = NonNullable<Awaited<ReturnType<typeof updateMe>>>
+    export type UpdateMeMutationBody = BodyType<UpdateProfileRequest>
+    export type UpdateMeMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Set the current authenticated user's preferred name
+ */
+export const useUpdateMe = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateMe>>, TError,{data: BodyType<UpdateProfileRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateMe>>,
+        TError,
+        {data: BodyType<UpdateProfileRequest>},
+        TContext
+      > => {
+      return useMutation(getUpdateMeMutationOptions(options));
+    }
+
+export const getListSessionsUrl = () => {
+
+
+
+
+  return `/api/sessions`
+}
+
+/**
+ * Ordered most-recent first.
+ * @summary List the current authenticated user's completed practice sessions
+ */
+export const listSessions = async ( options?: Parameters<typeof customFetch>[1]): Promise<SessionListResponse> => {
+
+  return customFetch<SessionListResponse>(getListSessionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListSessionsQueryKey = () => {
+    return [
+    `/api/sessions`
+    ] as const;
+    }
+
+
+export const getListSessionsQueryOptions = <TData = Awaited<ReturnType<typeof listSessions>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listSessions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListSessionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listSessions>>> = ({ signal }) => listSessions({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listSessions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListSessionsQueryResult = NonNullable<Awaited<ReturnType<typeof listSessions>>>
+export type ListSessionsQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary List the current authenticated user's completed practice sessions
+ */
+
+export function useListSessions<TData = Awaited<ReturnType<typeof listSessions>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listSessions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListSessionsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateSessionUrl = () => {
+
+
+
+
+  return `/api/sessions`
+}
+
+/**
+ * @summary Record a completed practice session for the current authenticated user
+ */
+export const createSession = async (createSessionRequest: CreateSessionRequest, options?: Parameters<typeof customFetch>[1]): Promise<PracticeSession> => {
+
+  return customFetch<PracticeSession>(getCreateSessionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createSessionRequest)
+  }
+);}
+
+
+
+
+
+export const getCreateSessionMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSession>>, TError,{data: BodyType<CreateSessionRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createSession>>, TError,{data: BodyType<CreateSessionRequest>}, TContext> => {
+
+const mutationKey = ['createSession'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createSession>>, {data: BodyType<CreateSessionRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createSession(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateSessionMutationResult = NonNullable<Awaited<ReturnType<typeof createSession>>>
+    export type CreateSessionMutationBody = BodyType<CreateSessionRequest>
+    export type CreateSessionMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Record a completed practice session for the current authenticated user
+ */
+export const useCreateSession = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createSession>>, TError,{data: BodyType<CreateSessionRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createSession>>,
+        TError,
+        {data: BodyType<CreateSessionRequest>},
+        TContext
+      > => {
+      return useMutation(getCreateSessionMutationOptions(options));
     }
 

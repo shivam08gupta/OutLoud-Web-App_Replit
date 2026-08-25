@@ -1,0 +1,173 @@
+Fix the current OutLoud app so that authenticated user data is no longer hardcoded or shared across users.
+
+IMPORTANT:
+- Do NOT redesign the UI.
+- Do NOT change the existing visual design, colors, layouts, camera/microphone flow, Gemini feedback flow, or authentication implementation.
+- Do NOT add new features beyond the requirements below.
+- Reuse the existing Replit Auth / Users & Auth setup and existing database/storage architecture.
+- Keep the implementation minimal and production-safe for the MVP.
+
+1. FIRST-TIME USER NAME
+
+After a user successfully authenticates for the first time, OutLoud must ask for the user's preferred name if a name is not already available from the authenticated profile.
+
+Use a simple first-time onboarding step:
+"What's your name?"
+Supporting text:
+"We'll use this to personalize your practice experience."
+
+Input:
+- Full name / preferred name
+- Required
+- Continue button
+
+Save the name to the authenticated user's profile/database.
+
+If the authentication provider already provides a reliable display name, prefill it, but allow the user to edit it before continuing.
+
+Do NOT use "Shivam" as a default or fallback name.
+
+2. DASHBOARD PERSONALIZATION
+
+Replace any hardcoded greeting such as:
+
+"Good morning, Shivam 👋"
+
+with the authenticated user's saved name:
+
+"Good morning, {userName} 👋"
+
+The name must come from the current authenticated user.
+
+Never hardcode a specific person's name.
+
+3. FIRST-TIME USER DASHBOARD
+
+A newly registered/authenticated user with ZERO completed practice sessions must NOT see fake/demo practice history.
+
+Remove/disable any seeded or hardcoded:
+- Recent History
+- Previous practice sessions
+- Fake session counts
+- Fake "last practiced" messages
+- Fake progress based on sample data
+
+For a first-time user, show:
+
+"Your practice history will appear here after your first session."
+
+Use an appropriate empty state while keeping the existing visual design.
+
+The progress section should show zero completed sessions rather than "4 sessions completed."
+
+4. RECENT HISTORY
+
+Recent History must be populated ONLY from practice sessions actually completed by the currently authenticated user.
+
+Each saved session should belong to the authenticated user's unique user ID.
+
+Never show another user's sessions.
+
+Do not use static/mock/demo history data in the production MVP.
+
+If the user has no completed sessions:
+- Show the empty state.
+- Do not show fake sessions.
+
+5. "LAST PRACTICED" MESSAGE
+
+Any message such as:
+
+"You last practised 5 days ago. Ready to get back into practice?"
+
+must be dynamically calculated from the authenticated user's actual completed practice sessions.
+
+Rules:
+- If the user has completed at least one session, calculate the date from their most recent completed session.
+- If the user has NEVER completed a session, do not show a "last practiced" message.
+- Instead, show a first-practice friendly message such as:
+  "Ready for your first practice?"
+
+Do not hardcode "5 days ago", "4 days ago", or any other date.
+
+6. HISTORY SCREEN
+
+Apply the same user-specific logic to the History screen.
+
+For a new user:
+- No fake sessions
+- No fake dates
+- No fake scores
+- No fake focus areas
+
+Show a clean empty state such as:
+
+"No practice sessions yet"
+
+"Complete your first practice session and your feedback will appear here."
+
+CTA:
+"Start Practising"
+
+For users who have completed sessions:
+- Show only their own sessions.
+- Display the actual session date.
+- Display actual feedback/score data where available.
+
+7. SESSION OWNERSHIP
+
+Every completed practice session must be associated with the authenticated user's unique ID.
+
+When creating a session, save:
+- userId
+- session ID
+- scenario/interview type
+- question
+- transcript
+- feedback
+- completion timestamp
+- any available score/focus information
+
+When querying history/dashboard data, filter strictly by the current authenticated user's userId.
+
+Do NOT rely only on frontend/local hardcoded state for ownership.
+
+8. EXISTING DEMO DATA
+
+Identify any mock/seed/demo practice-session data currently responsible for showing:
+- "4 sessions completed"
+- "Behavioural Interview"
+- "Self Introduction"
+- "Product Manager Interview - Mock Session 1"
+- "Behavioural Questions - STAR Method Practice"
+- fake dates/focus areas
+
+Do not display this data to authenticated users.
+
+If it is only frontend mock data, remove it from the production UI.
+If it is stored in the database, make sure it is not associated with new users and is not returned by user-specific queries.
+
+9. ACCEPTANCE CRITERIA
+
+Test with a completely new/random account.
+
+Expected result for a brand-new user:
+
+- User signs in.
+- OutLoud asks for their name.
+- User enters their name.
+- Dashboard greets them using that name.
+- Sessions completed = 0.
+- No fake Recent History appears.
+- No fake "last practiced" message appears.
+- History screen shows the empty state.
+- User can start their first practice.
+
+Then verify that after completing a real practice session:
+- Sessions completed becomes 1.
+- The session appears in Recent History.
+- The session appears in History.
+- "Last practiced" uses the actual completion date.
+- The session is associated with that authenticated user only.
+
+Before finishing, verify that there are no remaining hardcoded references to "Shivam", "4 sessions", "5 days ago", or the existing demo session titles in user-facing dashboard/history logic.

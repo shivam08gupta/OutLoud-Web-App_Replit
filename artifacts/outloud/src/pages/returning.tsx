@@ -13,14 +13,28 @@ import {
   Timer,
   MessageSquare,
   ArrowRight,
-  MoreHorizontal,
-  FileEdit,
-  LineChart,
+  ChevronRight,
   Plus
 } from "lucide-react";
+import { useGetMe, useListSessions } from "@workspace/api-client-react";
+import { formatRelativeDate, initialFor } from "@/lib/utils";
 
 export default function ReturningUser() {
   const [, setLocation] = useLocation();
+
+  const { data: me } = useGetMe();
+  const { data: sessionsData } = useListSessions();
+  const sessions = sessionsData?.sessions ?? [];
+  const sessionCount = sessions.length;
+  const lastSession = sessions[0];
+  const recentSessions = sessions.slice(0, 2);
+
+  const name = me?.name ?? "";
+  const initial = initialFor(name);
+  const lastFocusTag = lastSession?.answers[0]?.feedback.whatWentWell.tags[0];
+  const subtitle = lastSession
+    ? `You last practised ${formatRelativeDate(new Date(lastSession.completedAt))}. Ready to get back into practice?`
+    : "Ready for your first practice?";
 
   return (
     <div className="bg-background text-on-background min-h-screen flex flex-col md:flex-row antialiased">
@@ -43,7 +57,7 @@ export default function ReturningUser() {
       <aside className="hidden md:flex flex-col h-screen w-64 bg-surface-container-low border-r border-surface-variant p-md gap-sm sticky top-0">
         <div className="flex flex-col gap-xs mb-lg">
           <div className="flex items-center gap-sm">
-            <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-md text-headline-md">S</div>
+            <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-md text-headline-md">{initial}</div>
             <div>
               <h1 className="font-headline-md text-headline-md font-bold text-primary">OutLoud</h1>
               <p className="font-caption text-caption text-on-surface-variant">Speak with Confidence</p>
@@ -97,8 +111,8 @@ export default function ReturningUser() {
           
           {/* Page Header */}
           <div className="mb-lg">
-            <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-xs">Welcome back, Shivam 👋</h2>
-            <p className="font-body-lg text-body-lg text-on-surface-variant">You last practised 5 days ago. Ready to get back into practice?</p>
+            <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-xs">Welcome back{name ? `, ${name}` : ""} 👋</h2>
+            <p className="font-body-lg text-body-lg text-on-surface-variant">{subtitle}</p>
           </div>
 
           {/* Dashboard Grid */}
@@ -138,34 +152,42 @@ export default function ReturningUser() {
                 </div>
               </div>
 
-              {/* Recent Activity Bento */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-                <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm hover:border-outline-variant transition-colors duration-200 cursor-pointer">
-                  <div className="flex items-center justify-between mb-sm">
-                    <h4 className="font-label-md text-label-md text-primary">Resume Draft</h4>
-                    <MoreHorizontal className="w-5 h-5 text-on-surface-variant" />
+              {/* Recent Activity */}
+              <div>
+                <h3 className="font-label-md text-label-md text-primary uppercase tracking-wider mb-sm">Recent History</h3>
+                {recentSessions.length === 0 ? (
+                  <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex flex-col items-center text-center gap-sm">
+                    <History className="w-8 h-8 text-on-surface-variant" />
+                    <p className="font-body-md text-body-md text-on-surface-variant max-w-[22rem]">
+                      Your practice history will appear here after your first session.
+                    </p>
+                    <button
+                      onClick={() => setLocation("/onboarding")}
+                      className="mt-xs bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:opacity-90 transition-opacity"
+                    >
+                      Start Practising
+                    </button>
                   </div>
-                  <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-md">Product Manager Interview - Mock Session 1</p>
-                  <div className="flex justify-between items-center text-caption font-caption text-on-surface-variant">
-                    <span>Drafted 5 days ago</span>
-                    <FileEdit className="w-4 h-4" />
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                    {recentSessions.map((session) => (
+                      <div
+                        key={session.id}
+                        onClick={() => setLocation("/dashboard")}
+                        className="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm hover:border-outline-variant transition-colors duration-200 cursor-pointer"
+                      >
+                        <div className="flex items-center justify-between mb-sm">
+                          <h4 className="font-label-md text-label-md text-primary">Completed session</h4>
+                          <ChevronRight className="w-5 h-5 text-on-surface-variant" />
+                        </div>
+                        <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-md">{session.answers[0]?.question ?? `${session.answers.length} question${session.answers.length === 1 ? "" : "s"} practiced`}</p>
+                        <div className="flex justify-between items-center text-caption font-caption text-on-surface-variant">
+                          <span>{formatRelativeDate(new Date(session.completedAt))}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-
-                <div 
-                  onClick={() => setLocation("/feedback")}
-                  className="bg-surface-container-lowest border border-surface-variant rounded-xl p-md shadow-sm hover:border-outline-variant transition-colors duration-200 cursor-pointer"
-                >
-                  <div className="flex items-center justify-between mb-sm">
-                    <h4 className="font-label-md text-label-md text-primary">Review Feedback</h4>
-                    <MoreHorizontal className="w-5 h-5 text-on-surface-variant" />
-                  </div>
-                  <p className="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-md">Behavioral Questions - STAR Method Practice</p>
-                  <div className="flex justify-between items-center text-caption font-caption text-on-surface-variant">
-                    <span>Completed 1 week ago</span>
-                    <LineChart className="w-4 h-4" />
-                  </div>
-                </div>
+                )}
               </div>
             </div>
 
@@ -175,13 +197,13 @@ export default function ReturningUser() {
                 <h3 className="font-label-md text-label-md text-primary uppercase tracking-wider mb-md">Your Progress</h3>
                 <div className="flex flex-col gap-md">
                   <div>
-                    <p className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">4</p>
+                    <p className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">{sessionCount}</p>
                     <p className="font-body-md text-body-md text-on-surface-variant">sessions completed</p>
                   </div>
                   <div className="h-px bg-surface-variant w-full"></div>
                   <div>
                     <p className="font-label-md text-label-md text-on-surface-variant mb-1">Last focus</p>
-                    <p className="font-body-md text-body-md text-primary font-medium">Vocabulary</p>
+                    <p className="font-body-md text-body-md text-primary font-medium">{lastFocusTag ?? "Not available yet"}</p>
                   </div>
                   <div className="h-px bg-surface-variant w-full"></div>
                   <div>

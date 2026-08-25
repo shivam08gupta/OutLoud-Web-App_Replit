@@ -1,8 +1,57 @@
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
-import { CheckCircle2, Target, Calendar } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import { useCreateSession } from "@workspace/api-client-react";
+import type { FeedbackResponse } from "@workspace/api-client-react";
+
+const TOTAL_QUESTIONS = 3;
+
+function collectAnswers(): { question: string; transcript: string; feedback: FeedbackResponse }[] {
+  const answers: { question: string; transcript: string; feedback: FeedbackResponse }[] = [];
+  for (let q = 1; q <= TOTAL_QUESTIONS; q++) {
+    const feedbackRaw = sessionStorage.getItem(`outloud_feedback_${q}`);
+    if (!feedbackRaw) continue;
+    const question = sessionStorage.getItem(`outloud_question_${q}`) ?? "Tell me about your response.";
+    const transcript = sessionStorage.getItem(`outloud_transcript_${q}`) ?? "";
+    try {
+      const feedback = JSON.parse(feedbackRaw) as FeedbackResponse;
+      answers.push({ question, transcript, feedback });
+    } catch {
+      // Skip malformed entries rather than failing the whole session save.
+    }
+  }
+  return answers;
+}
 
 export default function SessionComplete() {
   const [, setLocation] = useLocation();
+  const createSessionMutation = useCreateSession();
+  const persistedRef = useRef(false);
+  const [answeredCount, setAnsweredCount] = useState(0);
+
+  // Persist the whole practice flow (every question with feedback) as a
+  // single practice session, once, when this screen is reached.
+  useEffect(() => {
+    if (persistedRef.current) return;
+    persistedRef.current = true;
+    const answers = collectAnswers();
+    setAnsweredCount(answers.length);
+    if (answers.length === 0) return;
+    createSessionMutation.mutate(
+      { data: { answers } },
+      {
+        onSuccess: () => {
+          for (let q = 1; q <= TOTAL_QUESTIONS; q++) {
+            sessionStorage.removeItem(`outloud_feedback_${q}`);
+            sessionStorage.removeItem(`outloud_transcript_${q}`);
+            sessionStorage.removeItem(`outloud_transcript_unsupported_${q}`);
+            sessionStorage.removeItem(`outloud_question_${q}`);
+          }
+        },
+      },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="bg-background text-on-surface antialiased min-h-screen flex items-center justify-center p-md md:p-lg">
@@ -17,43 +66,17 @@ export default function SessionComplete() {
           <p className="font-body-md md:font-body-lg text-body-md md:text-body-lg text-on-surface-variant max-w-[24rem]">Great job stepping into the studio today. Here is a summary of your session.</p>
         </header>
 
-        {/* Metrics Bento Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-sm">
-          <div className="flex flex-row md:flex-col items-center justify-between md:justify-center p-sm md:p-md bg-surface-container-low rounded-lg border border-surface-variant">
-            <span className="font-headline-md text-headline-md text-primary">3</span>
-            <span className="font-label-md text-label-md text-on-surface-variant md:mt-base">Questions</span>
-          </div>
-          <div className="flex flex-row md:flex-col items-center justify-between md:justify-center p-sm md:p-md bg-surface-container-low rounded-lg border border-surface-variant relative overflow-hidden">
-            <div className="absolute inset-0 bg-secondary/5"></div>
-            <span className="font-headline-md text-headline-md text-secondary relative z-10">2</span>
-            <span className="font-label-md text-label-md text-on-surface-variant md:mt-base text-center relative z-10">Improvements</span>
-          </div>
-          <div className="flex flex-row md:flex-col items-center justify-between md:justify-center p-sm md:p-md bg-surface-container-low rounded-lg border border-surface-variant">
-            <span className="font-headline-md text-headline-md text-on-primary-fixed-variant">1</span>
-            <span className="font-label-md text-label-md text-on-surface-variant md:mt-base">Retry</span>
-          </div>
-        </section>
-
-        {/* Context & Next Steps */}
+        {/* Session Summary */}
         <section className="flex flex-col gap-md border-t border-surface-variant pt-lg">
-          <div className="flex items-start gap-md p-sm bg-surface rounded-lg">
-            <div className="mt-xs">
-              <Target className="w-5 h-5 text-secondary" />
-            </div>
-            <div>
-              <h3 className="font-label-md text-label-md text-on-surface-variant mb-base">Today's Focus</h3>
-              <p className="font-body-md text-body-md text-on-surface font-medium">Vocabulary + Fluency</p>
-            </div>
+          <div className="flex items-center justify-center gap-md p-sm md:p-md bg-surface-container-low rounded-lg border border-surface-variant">
+            <span className="font-headline-md text-headline-md text-primary">{answeredCount}</span>
+            <span className="font-label-md text-label-md text-on-surface-variant">
+              of {TOTAL_QUESTIONS} questions answered with feedback
+            </span>
           </div>
-          <div className="flex items-start gap-md p-sm">
-            <div className="mt-xs">
-              <Calendar className="w-5 h-5 text-primary-container fill-current text-surface" strokeWidth={1.5} />
-            </div>
-            <div>
-              <h3 className="font-label-md text-label-md text-on-surface-variant mb-base">Next Practice</h3>
-              <p className="font-body-md text-body-md text-on-surface font-medium">Tomorrow: Unexpected follow-up questions</p>
-            </div>
-          </div>
+          <p className="font-body-md text-body-md text-on-surface-variant text-center">
+            Your feedback for each question is saved to your history — review it anytime from the dashboard.
+          </p>
         </section>
 
         {/* Actions */}

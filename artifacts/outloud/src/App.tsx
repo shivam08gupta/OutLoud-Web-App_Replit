@@ -2,6 +2,8 @@ import { type ReactNode, useEffect, useRef } from 'react';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { ClerkProvider, Show, useClerk } from '@clerk/react';
 import { publishableKeyFromHost } from '@clerk/react/internal';
+import { useGetMe } from '@workspace/api-client-react';
+import { Loader2 } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -19,6 +21,7 @@ import {
 import Landing from '@/pages/landing';
 import SignInPage from '@/pages/sign-in';
 import SignUpPage from '@/pages/sign-up';
+import WelcomeName from '@/pages/welcome-name';
 import Dashboard from '@/pages/dashboard';
 import Onboarding from '@/pages/onboarding';
 import Permissions from '@/pages/permissions';
@@ -54,12 +57,23 @@ if (!clerkPubKey) {
   throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY in .env file');
 }
 
-/** Wraps a page that requires an authenticated user. Signed-out visitors are
- * sent back to the public landing page rather than to sign-in. */
+function FullScreenSpinner() {
+  return (
+    <div className="bg-background min-h-screen flex items-center justify-center">
+      <Loader2 className="w-8 h-8 text-primary animate-spin" />
+    </div>
+  );
+}
+
+/** Wraps a page that requires an authenticated user with a saved name.
+ * Signed-out visitors are sent to the public landing page; signed-in users
+ * without a saved name are sent to the name-capture step first. */
 function RequireAuth({ children }: { children: ReactNode }) {
   return (
     <>
-      <Show when="signed-in">{children}</Show>
+      <Show when="signed-in">
+        <RequireProfileName>{children}</RequireProfileName>
+      </Show>
       <Show when="signed-out">
         <Redirect to="/" />
       </Show>
@@ -67,19 +81,32 @@ function RequireAuth({ children }: { children: ReactNode }) {
   );
 }
 
+function RequireProfileName({ children }: { children: ReactNode }) {
+  const { data, isLoading } = useGetMe();
+  if (isLoading) return <FullScreenSpinner />;
+  if (!data?.name) return <Redirect to="/welcome-name" />;
+  return <>{children}</>;
+}
+
 /** The base path ("/") must stay public for signed-out visitors and send
- * signed-in users straight into the app. */
+ * signed-in users straight into the app (or to the name-capture step first). */
 function HomeRedirect() {
   return (
     <>
       <Show when="signed-in">
-        <Redirect to="/dashboard" />
+        <PostAuthRedirect />
       </Show>
       <Show when="signed-out">
         <Landing />
       </Show>
     </>
   );
+}
+
+function PostAuthRedirect() {
+  const { data, isLoading } = useGetMe();
+  if (isLoading) return <FullScreenSpinner />;
+  return <Redirect to={data?.name ? "/dashboard" : "/welcome-name"} />;
 }
 
 function Router() {
@@ -89,6 +116,14 @@ function Router() {
         <Route path="/" component={HomeRedirect} />
         <Route path="/sign-in/*?" component={SignInPage} />
         <Route path="/sign-up/*?" component={SignUpPage} />
+        <Route path="/welcome-name">
+          <Show when="signed-in">
+            <WelcomeName />
+          </Show>
+          <Show when="signed-out">
+            <Redirect to="/" />
+          </Show>
+        </Route>
         <Route path="/dashboard">
           <RequireAuth>
             <Dashboard />

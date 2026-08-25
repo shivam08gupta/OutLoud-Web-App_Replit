@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './createSessionRequest';
 export * from './errorResponse';
 export * from './feedbackFocusItem';
 export * from './feedbackFocusItemExample';
@@ -14,3 +15,8 @@ export * from './feedbackResponse';
 export * from './feedbackResponseTrySayingItThisWay';
 export * from './feedbackResponseWhatWentWell';
 export * from './healthStatus';
+export * from './practiceSession';
+export * from './practiceSessionAnswer';
+export * from './sessionListResponse';
+export * from './updateProfileRequest';
+export * from './userProfile';

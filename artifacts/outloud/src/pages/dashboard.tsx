@@ -26,11 +26,27 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { LogoutLink } from "@/components/logout-link";
+import { useGetMe, useListSessions } from "@workspace/api-client-react";
+import { formatRelativeDate, initialFor } from "@/lib/utils";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+
+  const { data: me } = useGetMe();
+  const { data: sessionsData } = useListSessions();
+  const sessions = sessionsData?.sessions ?? [];
+  const sessionCount = sessions.length;
+  const lastSession = sessions[0];
+  const recentSessions = sessions.slice(0, 2);
+
+  const name = me?.name ?? "";
+  const initial = initialFor(name);
+  const lastPracticedLabel = lastSession
+    ? `You last practised ${formatRelativeDate(new Date(lastSession.completedAt))}. Ready to continue?`
+    : "Ready for your first practice?";
+  const lastFocusTags = lastSession?.answers[0]?.feedback.whatWentWell.tags.slice(0, 2) ?? [];
 
   return (
     <div className="bg-background text-on-background flex flex-col md:flex-row min-h-screen">
@@ -42,7 +58,7 @@ export default function Dashboard() {
             <Bell className="w-5 h-5" />
           </button>
           <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">
-            S
+            {initial}
           </div>
         </div>
       </nav>
@@ -100,10 +116,10 @@ export default function Dashboard() {
 
           <div className="flex items-center gap-3 px-4 py-2">
             <div className="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
-              S
+              {initial}
             </div>
             <div className="flex flex-col">
-              <span className="font-label-md text-label-md text-primary">Shivam</span>
+              <span className="font-label-md text-label-md text-primary">{name || "Your account"}</span>
               <span className="font-caption text-caption text-on-surface-variant">Free Plan</span>
             </div>
           </div>
@@ -113,16 +129,16 @@ export default function Dashboard() {
       {/* Main Content Canvas */}
       <main className="flex-1 p-sm md:p-lg md:ml-0 max-w-container-max mx-auto w-full mb-16 md:mb-0">
         <header className="mb-xl hidden md:block">
-          <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Good morning, Shivam 👋</h1>
+          <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Good morning{name ? `, ${name}` : ""} 👋</h1>
           <p className="font-body-lg text-body-lg text-on-surface-variant mb-4">Ready for today's practice?</p>
           <div className="inline-flex items-center gap-2 bg-surface-variant text-primary-container px-3 py-1.5 rounded-full font-caption text-caption">
             <Info className="w-4 h-4" />
-            You last practised 4 days ago. Ready to continue?
+            {lastPracticedLabel}
           </div>
         </header>
 
         <header className="mb-md md:hidden mt-2">
-          <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-primary">Good morning, Shivam 👋</h1>
+          <h1 className="font-headline-lg-mobile text-headline-lg-mobile text-primary">Good morning{name ? `, ${name}` : ""} 👋</h1>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
@@ -184,58 +200,44 @@ export default function Dashboard() {
                 <TrendingUp className="w-5 h-5 text-on-surface-variant" />
               </h3>
               <div className="flex items-baseline gap-2 mb-6">
-                <span className="font-display-lg text-display-lg text-primary">4</span>
+                <span className="font-display-lg text-display-lg text-primary">{sessionCount}</span>
                 <span className="font-body-md text-body-md text-on-surface-variant">sessions completed</span>
               </div>
-              <div className="space-y-4">
-                <div>
-                  <div className="font-caption text-caption text-on-surface-variant mb-1 uppercase tracking-wide">Last Focus</div>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-2.5 py-1 bg-surface-container-low border border-outline-variant text-primary rounded-md font-caption text-caption">Vocabulary</span>
-                    <span className="px-2.5 py-1 bg-surface-container-low border border-outline-variant text-primary rounded-md font-caption text-caption">Clarity</span>
+              {lastFocusTags.length > 0 ? (
+                <div className="space-y-4">
+                  <div>
+                    <div className="font-caption text-caption text-on-surface-variant mb-1 uppercase tracking-wide">Last Focus</div>
+                    <div className="flex flex-wrap gap-2">
+                      {lastFocusTags.map((tag: string) => (
+                        <span key={tag} className="px-2.5 py-1 bg-surface-container-low border border-outline-variant text-primary rounded-md font-caption text-caption">{tag}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <div className="font-caption text-caption text-on-surface-variant mb-1 uppercase tracking-wide">Next Focus</div>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-2.5 py-1 bg-secondary-container text-on-secondary-container rounded-md font-caption text-caption border border-secondary-fixed-dim">Unexpected questions</span>
-                  </div>
-                </div>
-              </div>
+              ) : (
+                <p className="font-body-md text-body-md text-on-surface-variant">
+                  Complete a practice session to see your focus areas here.
+                </p>
+              )}
             </div>
 
             {/* Mobile Progress Stack */}
             <div className="md:hidden flex justify-between items-end mt-2">
               <h3 className="font-headline-md text-headline-md text-on-surface">Your Progress</h3>
-              <Link href="/dashboard" className="font-label-md text-label-md text-secondary hover:underline">View All</Link>
+              <Link href="/returning" className="font-label-md text-label-md text-secondary hover:underline">View All</Link>
             </div>
-            
-            <div className="md:hidden flex flex-col gap-sm">
-              <div className="bg-surface-container-lowest rounded-lg border border-surface-variant p-sm flex items-center justify-between">
-                <div className="flex items-center gap-sm">
-                  <div className="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="font-label-md text-label-md text-on-surface">Clarity Score</p>
-                    <p className="font-caption text-caption text-on-surface-variant">Top 15% this week</p>
-                  </div>
-                </div>
-                <span className="font-headline-md text-headline-md text-primary">87<span className="text-[16px] text-on-surface-variant">/100</span></span>
-              </div>
 
-              <div className="bg-surface-container-lowest rounded-lg border border-surface-variant p-sm flex items-center justify-between">
-                <div className="flex items-center gap-sm">
-                  <div className="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="font-label-md text-label-md text-on-surface">Pacing</p>
-                    <p className="font-caption text-caption text-on-surface-variant">120 words per minute</p>
-                  </div>
+            <div className="md:hidden bg-surface-container-lowest rounded-lg border border-surface-variant p-sm flex items-center justify-between">
+              <div className="flex items-center gap-sm">
+                <div className="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5" />
                 </div>
-                <span className="font-headline-md text-headline-md text-secondary">Optimal</span>
+                <div>
+                  <p className="font-label-md text-label-md text-on-surface">Sessions completed</p>
+                  <p className="font-caption text-caption text-on-surface-variant">{lastPracticedLabel}</p>
+                </div>
               </div>
+              <span className="font-headline-md text-headline-md text-primary">{sessionCount}</span>
             </div>
           </section>
 
@@ -243,79 +245,88 @@ export default function Dashboard() {
           <section className="lg:col-span-12 mt-4 md:mt-4">
             <div className="hidden md:flex items-center justify-between mb-4">
               <h3 className="font-headline-md text-[20px] font-semibold text-primary">Recent History</h3>
-              <Link href="/dashboard" className="font-label-md text-label-md text-primary hover:underline">View All</Link>
+              {sessionCount > 0 && (
+                <Link href="/returning" className="font-label-md text-label-md text-primary hover:underline">View All</Link>
+              )}
             </div>
-            
+
             <h3 className="font-headline-md text-headline-md text-on-surface mb-sm md:hidden">Recent Feedback</h3>
 
-            {/* Desktop History Table */}
-            <div className="hidden md:block bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
-              <div className="divide-y divide-surface-variant">
-                <div className="p-sm md:px-md md:py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary-container shrink-0 group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
-                      <Mic className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="font-label-md text-label-md text-primary mb-1">Behavioural Interview</div>
-                      <div className="flex items-center gap-2 font-caption text-caption text-on-surface-variant">
-                        <span>Yesterday</span>
-                        <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
-                        <span>Focus: Vocabulary</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 self-end md:self-auto">
-                    <div className="text-right hidden sm:block">
-                      <div className="font-label-md text-label-md text-primary">85% Clarity</div>
-                      <div className="font-caption text-caption text-secondary">Good pacing</div>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-outline-variant group-hover:text-primary transition-colors" />
+            {recentSessions.length === 0 ? (
+              <div className="bg-surface-container-lowest rounded-xl border border-surface-variant p-lg flex flex-col items-center text-center gap-sm">
+                <div className="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+                  <History className="w-6 h-6" />
+                </div>
+                <p className="font-body-md text-body-md text-on-surface-variant max-w-[24rem]">
+                  Your practice history will appear here after your first session.
+                </p>
+                <button
+                  onClick={() => setLocation("/onboarding")}
+                  className="mt-xs bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:opacity-90 transition-opacity"
+                >
+                  Start Practising
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Desktop History Table */}
+                <div className="hidden md:block bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                  <div className="divide-y divide-surface-variant">
+                    {recentSessions.map((session) => {
+                      const firstAnswer = session.answers[0];
+                      const focusTag = firstAnswer?.feedback.whatWentWell.tags[0];
+                      return (
+                        <div key={session.id} className="p-sm md:px-md md:py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary-container shrink-0 group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
+                              <Mic className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <div className="font-label-md text-label-md text-primary mb-1 line-clamp-1 max-w-[24rem]">{firstAnswer?.question ?? "Practice session"}</div>
+                              <div className="flex items-center gap-2 font-caption text-caption text-on-surface-variant">
+                                <span>{formatRelativeDate(new Date(session.completedAt))}</span>
+                                <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
+                                <span>{session.answers.length} question{session.answers.length === 1 ? "" : "s"}</span>
+                                {focusTag && (
+                                  <>
+                                    <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
+                                    <span>Focus: {focusTag}</span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 self-end md:self-auto">
+                            <ChevronRight className="w-5 h-5 text-outline-variant group-hover:text-primary transition-colors" />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
-                <div className="p-sm md:px-md md:py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary-container shrink-0 group-hover:bg-primary-container group-hover:text-on-primary transition-colors">
-                      <User className="w-5 h-5" />
-                    </div>
+                {/* Mobile Feedback Snippet */}
+                <div className="md:hidden bg-surface-container-lowest rounded-xl border border-surface-variant p-sm">
+                  <div className="flex justify-between items-start mb-sm">
                     <div>
-                      <div className="font-label-md text-label-md text-primary mb-1">Self Introduction</div>
-                      <div className="flex items-center gap-2 font-caption text-caption text-on-surface-variant">
-                        <span>3 days ago</span>
-                        <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
-                        <span>Focus: Fluency</span>
-                      </div>
+                      <p className="font-label-md text-label-md text-on-surface line-clamp-1">{recentSessions[0].answers[0]?.question ?? "Practice session"}</p>
+                      <p className="font-caption text-caption text-on-surface-variant">{formatRelativeDate(new Date(recentSessions[0].completedAt))}</p>
                     </div>
+                    <span className="bg-surface-variant text-on-surface-variant px-2 py-1 rounded-full font-caption text-caption">Completed</span>
                   </div>
-                  <div className="flex items-center gap-3 self-end md:self-auto">
-                    <div className="text-right hidden sm:block">
-                      <div className="font-label-md text-label-md text-primary">78% Clarity</div>
-                      <div className="font-caption text-caption text-on-surface-variant">2 filler words</div>
+                  {(recentSessions[0].answers[0]?.feedback.whatWentWell.tags.length ?? 0) > 0 && (
+                    <div className="flex flex-wrap gap-xs">
+                      {recentSessions[0].answers[0].feedback.whatWentWell.tags.slice(0, 2).map((tag: string) => (
+                        <span key={tag} className="bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-[8px] font-label-md text-[12px]">{tag}</span>
+                      ))}
                     </div>
-                    <ChevronRight className="w-5 h-5 text-outline-variant group-hover:text-primary transition-colors" />
-                  </div>
+                  )}
+                  <p className="font-body-md text-[14px] text-on-surface-variant mt-sm leading-relaxed border-t border-surface-variant pt-sm">
+                    "{recentSessions[0].answers[0]?.feedback.whatWentWell.summary}"
+                  </p>
                 </div>
-              </div>
-            </div>
-
-            {/* Mobile Feedback Snippet */}
-            <div className="md:hidden bg-surface-container-lowest rounded-xl border border-surface-variant p-sm">
-              <div className="flex justify-between items-start mb-sm">
-                <div>
-                  <p className="font-label-md text-label-md text-on-surface">System Design Interview</p>
-                  <p className="font-caption text-caption text-on-surface-variant">Yesterday</p>
-                </div>
-                <span className="bg-surface-variant text-on-surface-variant px-2 py-1 rounded-full font-caption text-caption">Completed</span>
-              </div>
-              <div className="flex flex-wrap gap-xs">
-                <span className="bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-[8px] font-label-md text-[12px]">Clear Enunciation</span>
-                <span className="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-[8px] font-label-md text-[12px]">Good Structure</span>
-              </div>
-              <p className="font-body-md text-[14px] text-on-surface-variant mt-sm leading-relaxed border-t border-surface-variant pt-sm">
-                "Your explanation of the load balancer was concise. Try to reduce the use of 'um' during transitions."
-              </p>
-            </div>
+              </>
+            )}
           </section>
         </div>
 

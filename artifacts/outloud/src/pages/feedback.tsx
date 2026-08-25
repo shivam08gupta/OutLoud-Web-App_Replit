@@ -28,7 +28,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { LogoutLink } from "@/components/logout-link";
-import { useGenerateFeedback } from "@workspace/api-client-react";
+import { useGenerateFeedback, useGetMe } from "@workspace/api-client-react";
+import { initialFor } from "@/lib/utils";
 
 const TOTAL_QUESTIONS = 3;
 
@@ -37,6 +38,8 @@ export default function Feedback() {
   const search = useSearch();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const { data: me } = useGetMe();
+  const initial = initialFor(me?.name);
 
   const currentQuestion = Math.min(
     Math.max(parseInt(new URLSearchParams(search).get("q") ?? "1", 10) || 1, 1),
@@ -53,15 +56,31 @@ export default function Feedback() {
   const feedbackMutation = useGenerateFeedback();
   const requestedForRef = useRef<number | null>(null);
 
+  // Stash this question's feedback in sessionStorage keyed by question
+  // number. The whole practice flow (all questions) is persisted as one
+  // practice session record once the user reaches the completion screen.
+  const stashFeedback = (feedbackResult: NonNullable<typeof feedbackMutation.data>) => {
+    sessionStorage.setItem(
+      `outloud_feedback_${currentQuestion}`,
+      JSON.stringify(feedbackResult),
+    );
+  };
+
   useEffect(() => {
     if (requestedForRef.current === currentQuestion) return;
     requestedForRef.current = currentQuestion;
-    feedbackMutation.mutate({ data: { question: questionText, transcript } });
+    feedbackMutation.mutate(
+      { data: { question: questionText, transcript } },
+      { onSuccess: stashFeedback },
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion]);
 
   const handleRetryFeedback = () => {
-    feedbackMutation.mutate({ data: { question: questionText, transcript } });
+    feedbackMutation.mutate(
+      { data: { question: questionText, transcript } },
+      { onSuccess: stashFeedback },
+    );
   };
 
   const feedback = feedbackMutation.data;
@@ -123,7 +142,7 @@ export default function Feedback() {
           </LogoutLink>
           <div className="flex items-center gap-3 px-4 py-2 mt-2">
             <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">
-              S
+              {initial}
             </div>
           </div>
         </div>
@@ -142,7 +161,7 @@ export default function Feedback() {
             <button className="text-on-surface-variant hover:text-primary">
               <Bell className="w-5 h-5" />
             </button>
-            <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">S</div>
+            <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">{initial}</div>
           </div>
         </header>
 

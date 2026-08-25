@@ -46,3 +46,34 @@ export interface ErrorResponse {
   error: string;
 }
 
+export interface UserProfile {
+  name: string | null;
+}
+
+export interface UpdateProfileRequest {
+  /** @minLength 1 */
+  name: string;
+}
+
+export interface PracticeSessionAnswer {
+  question: string;
+  transcript: string;
+  feedback: FeedbackResponse;
+}
+
+export interface PracticeSession {
+  id: number;
+  /** @minItems 1 */
+  answers: PracticeSessionAnswer[];
+  completedAt: string;
+}
+
+export interface CreateSessionRequest {
+  /** @minItems 1 */
+  answers: PracticeSessionAnswer[];
+}
+
+export interface SessionListResponse {
+  sessions: PracticeSession[];
+}
+

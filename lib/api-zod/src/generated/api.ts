@@ -49,3 +49,125 @@ export const GenerateFeedbackResponse = zod.object({
 })
 
 
+/**
+ * @summary Get the current authenticated user's profile
+ */
+export const GetMeResponse = zod.object({
+  "name": zod.string().nullable()
+})
+
+
+/**
+ * @summary Set the current authenticated user's preferred name
+ */
+
+
+
+export const UpdateMeBody = zod.object({
+  "name": zod.string().min(1)
+})
+
+export const UpdateMeResponse = zod.object({
+  "name": zod.string().nullable()
+})
+
+
+/**
+ * Ordered most-recent first.
+ * @summary List the current authenticated user's completed practice sessions
+ */
+
+
+
+export const ListSessionsResponse = zod.object({
+  "sessions": zod.array(zod.object({
+  "id": zod.number(),
+  "answers": zod.array(zod.object({
+  "question": zod.string(),
+  "transcript": zod.string(),
+  "feedback": zod.object({
+  "whatWentWell": zod.object({
+  "summary": zod.string(),
+  "tags": zod.array(zod.string())
+}),
+  "focusOn": zod.array(zod.object({
+  "title": zod.string(),
+  "description": zod.string(),
+  "example": zod.object({
+  "youSaid": zod.string(),
+  "tryInstead": zod.string()
+})
+})),
+  "trySayingItThisWay": zod.object({
+  "suggestion": zod.string(),
+  "why": zod.string()
+})
+})
+})).min(1),
+  "completedAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Record a completed practice session for the current authenticated user
+ */
+
+
+
+export const CreateSessionBody = zod.object({
+  "answers": zod.array(zod.object({
+  "question": zod.string(),
+  "transcript": zod.string(),
+  "feedback": zod.object({
+  "whatWentWell": zod.object({
+  "summary": zod.string(),
+  "tags": zod.array(zod.string())
+}),
+  "focusOn": zod.array(zod.object({
+  "title": zod.string(),
+  "description": zod.string(),
+  "example": zod.object({
+  "youSaid": zod.string(),
+  "tryInstead": zod.string()
+})
+})),
+  "trySayingItThisWay": zod.object({
+  "suggestion": zod.string(),
+  "why": zod.string()
+})
+})
+})).min(1)
+})
+
+
+
+
+export const CreateSessionResponse = zod.object({
+  "id": zod.number(),
+  "answers": zod.array(zod.object({
+  "question": zod.string(),
+  "transcript": zod.string(),
+  "feedback": zod.object({
+  "whatWentWell": zod.object({
+  "summary": zod.string(),
+  "tags": zod.array(zod.string())
+}),
+  "focusOn": zod.array(zod.object({
+  "title": zod.string(),
+  "description": zod.string(),
+  "example": zod.object({
+  "youSaid": zod.string(),
+  "tryInstead": zod.string()
+})
+})),
+  "trySayingItThisWay": zod.object({
+  "suggestion": zod.string(),
+  "why": zod.string()
+})
+})
+})).min(1),
+  "completedAt": zod.coerce.date()
+})
+
+
