@@ -17,6 +17,9 @@ export default function Onboarding() {
     if (currentStep < totalSteps) {
       setCurrentStep(prev => prev + 1);
     } else {
+      // Persist the chosen role so the practice screen can select a
+      // role-specific question bank.
+      localStorage.setItem("outloud_role", selection.role);
       setLocation("/permissions");
     }
   };

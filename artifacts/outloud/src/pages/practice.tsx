@@ -6,21 +6,85 @@ import { trackEvent, identifyUser } from "@/lib/analytics";
 
 const SCENARIO_TYPE = "behavioural_interview";
 
-const QUESTIONS = [
-  {
-    prompt: "Tell me about a time when you disagreed with a stakeholder.",
-    guidance: "Take a moment to think. There's no need to rush. Focus on outlining the situation, your specific action, and the constructive outcome.",
-  },
-  {
-    prompt: "Describe a project where you had to learn something new under a tight deadline.",
-    guidance: "Walk through how you prioritised learning, the resources you used, and how it affected the outcome.",
-  },
-  {
-    prompt: "Tell me about a time you received difficult feedback. How did you respond?",
-    guidance: "Focus on what you changed afterwards, not just how the feedback felt.",
-  },
-];
-const TOTAL_QUESTIONS = QUESTIONS.length;
+// Small static per-role question banks. Keyed by the role id chosen on the
+// onboarding screen ("pm" | "swe" | "data" | "marketing" | "other").
+const QUESTION_BANKS: Record<string, { prompt: string; guidance: string }[]> = {
+  pm: [
+    {
+      prompt: "How would you prioritize features for a product roadmap with limited engineering resources?",
+      guidance: "Walk through the framework you'd use to weigh impact, effort, and stakeholder needs, then land on a clear call.",
+    },
+    {
+      prompt: "Walk me through a time you used metrics to make a product decision.",
+      guidance: "Describe the metric you tracked, what it told you, and the decision or trade-off it drove.",
+    },
+    {
+      prompt: "Tell me about a time you had to align conflicting stakeholders to ship a project.",
+      guidance: "Focus on how you surfaced the disagreement, the execution plan you agreed on, and the outcome.",
+    },
+  ],
+  swe: [
+    {
+      prompt: "Walk me through how you would approach debugging a critical production issue.",
+      guidance: "Describe how you'd narrow down the root cause under pressure, not just the eventual fix.",
+    },
+    {
+      prompt: "Describe how you would design a system to handle a sudden spike in traffic.",
+      guidance: "Talk through the key components and trade-offs, at a level a non-specialist teammate could follow.",
+    },
+    {
+      prompt: "Tell me about a time you disagreed with a teammate on a technical approach and how you resolved it.",
+      guidance: "Focus on how the disagreement was worked through and what the collaboration looked like afterward.",
+    },
+  ],
+  data: [
+    {
+      prompt: "Walk me through how you would analyze a sudden drop in a key metric using data.",
+      guidance: "Describe how you'd query and slice the data to isolate the cause, not just the final finding.",
+    },
+    {
+      prompt: "Describe a time you designed or analyzed an experiment (A/B test). What did you learn?",
+      guidance: "Cover the hypothesis, how you measured success, and what the result changed.",
+    },
+    {
+      prompt: "Tell me about a time you had to explain a complex data finding to a non-technical stakeholder.",
+      guidance: "Focus on how you translated the insight into something actionable for your audience.",
+    },
+  ],
+  marketing: [
+    {
+      prompt: "Walk me through how you would plan a go-to-market strategy for a new product launch.",
+      guidance: "Cover positioning, channels, and how you'd sequence the launch.",
+    },
+    {
+      prompt: "Describe a time you had to reposition a product or campaign to reach a new audience.",
+      guidance: "Focus on the acquisition or positioning insight that drove the change.",
+    },
+    {
+      prompt: "Tell me about a campaign you ran and how you measured its success.",
+      guidance: "Be specific about the metrics you used and what they told you about performance.",
+    },
+  ],
+  other: [
+    {
+      prompt: "Tell me about a time when you disagreed with a stakeholder.",
+      guidance: "Take a moment to think. There's no need to rush. Focus on outlining the situation, your specific action, and the constructive outcome.",
+    },
+    {
+      prompt: "Describe a project where you had to learn something new under a tight deadline.",
+      guidance: "Walk through how you prioritised learning, the resources you used, and how it affected the outcome.",
+    },
+    {
+      prompt: "Tell me about a time you received difficult feedback. How did you respond?",
+      guidance: "Focus on what you changed afterwards, not just how the feedback felt.",
+    },
+  ],
+};
+
+function getQuestionBank() {
+  const role = localStorage.getItem("outloud_role");
+  return (role && QUESTION_BANKS[role]) || QUESTION_BANKS.other;
+}
 
 type SpeechRecognitionLike = {
   continuous: boolean;
@@ -100,6 +164,8 @@ export default function Practice() {
   const [, setLocation] = useLocation();
   const search = useSearch();
   const params = new URLSearchParams(search);
+  const QUESTIONS = getQuestionBank();
+  const TOTAL_QUESTIONS = QUESTIONS.length;
   const currentQuestion = Math.min(
     Math.max(parseInt(params.get("q") ?? "1", 10) || 1, 1),
     TOTAL_QUESTIONS,
