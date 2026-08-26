@@ -207,6 +207,9 @@ export default function Practice() {
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const finalTranscriptRef = useRef("");
   const isRecordingRef = useRef(false);
+  // Snapshot of the latest interim+final transcript, updated on every onresult event.
+  // Recovers speech that Android cut off before a result was ever marked final.
+  const lastSeenTranscriptRef = useRef("");
 
   // Acquire camera/microphone for this visit to the practice screen.
   useEffect(() => {
@@ -354,7 +357,9 @@ export default function Practice() {
             interim += result[0].transcript;
           }
         }
-        setTranscript((finalTranscriptRef.current + interim).trim());
+        const combined = (finalTranscriptRef.current + interim).trim();
+        setTranscript(combined);
+        lastSeenTranscriptRef.current = combined;
       };
       recognition.onerror = (event: any) => {
         // Transient errors (dropped connection, brief silence, engine hiccups) are common
@@ -434,9 +439,11 @@ export default function Practice() {
       }
 
       // Fall back to the live transcript (which includes not-yet-finalized interim
-      // speech) if recognition was cut off before Android finalized a result --
-      // otherwise a captured-but-uncommitted response would be discarded entirely.
-      const finalText = finalTranscriptRef.current.trim() || transcript.trim();
+      // speech), then to the last onresult snapshot, if recognition was cut off
+      // before Android finalized a result -- otherwise a captured-but-uncommitted
+      // response would be discarded entirely.
+      const finalText =
+        finalTranscriptRef.current.trim() || transcript.trim() || lastSeenTranscriptRef.current.trim();
       if (!finalText) {
         setEmptyTranscriptError(true);
         return;
