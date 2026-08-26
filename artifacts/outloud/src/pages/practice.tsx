@@ -528,7 +528,7 @@ export default function Practice() {
           )}
           <div className="absolute bottom-3 right-3 flex gap-2">
             <div className="w-10 h-10 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm border border-outline-variant flex items-center justify-center text-on-surface">
-              {micOnly || mediaError ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+              {mediaError ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
             </div>
             <div className="w-10 h-10 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm border border-outline-variant flex items-center justify-center text-on-surface">
               {micOnly || mediaError ? <VideoOff className="w-5 h-5" /> : <Video className="w-5 h-5" />}
