@@ -325,21 +325,6 @@ export default function Practice() {
       user_id: userId,
     });
 
-    // Real microphone recording via MediaRecorder.
-    if (streamRef.current && typeof MediaRecorder !== "undefined") {
-      try {
-        const audioTracks = streamRef.current.getAudioTracks();
-        if (audioTracks.length > 0) {
-          const audioStream = new MediaStream(audioTracks);
-          const recorder = new MediaRecorder(audioStream);
-          mediaRecorderRef.current = recorder;
-          recorder.start();
-        }
-      } catch {
-        // Recording indicator still works even if MediaRecorder fails to start.
-      }
-    }
-
     // Real browser speech-to-text.
     const Ctor = getSpeechRecognitionCtor();
     if (Ctor) {
@@ -403,13 +388,6 @@ export default function Practice() {
     setIsSubmitting(true);
     const responseDurationSeconds = seconds;
 
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
-      try {
-        mediaRecorderRef.current.stop();
-      } catch {
-        // ignore
-      }
-    }
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
